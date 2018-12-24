@@ -1,5 +1,10 @@
 #!/bin/bash
 
+getInput() {
+        echo -ne "\e[4msysmod38\e[0m > "        # gör blinkande
+        read val
+}
+
 printChar() {
 	# Skriver ut en viss mängd valfria tecken
 	# arg 1 tecken
@@ -10,7 +15,7 @@ printChar() {
 	done
 }
 printVersion() {
-	echo -e "\n\t\t=[ SKID SYSADMIN (version 0.1.dev.nodisco)]\t\t\t"
+	echo -e "\n\t\t=[ SKIDADMIN38 (version 0.1.dev.nodisco)]\t\t\t"
 }
 printBanner() {
 	# Skriver ut en banner
@@ -27,20 +32,59 @@ printBanner() {
 
 # ---------- GRUPP FUNKTIONER ---------
 createGroup() {
-	echo ""
+	echo "creating group"
 }
 listGroups() {
-	echo ""
+	echo "listing groups"
 }
 listGroupMembers() {
-	echo ""
+	echo "listing the groups members"
+}
+addUserToGroup() {
+	echo "adding user to group"
+}
+removeUserFromGroup() {
+	echo "removing user from group"
 }
 groupMenu() {
 	# Skriver ut grupp menyn
 
 	printBanner
 	echo -e "\n+ -- --=[ Group Menu - Type help for more information]\n"
-	echo -e "[+] create\n[+] list\n[+] members\n[+] add\n[+] exit"
+	echo -e "[+] create\n[+] list\n[+] members\n[+] add\n[+] remove\n[+] exit\n"
+
+	getInput
+	while [ $val != "exit" ]; do
+		# Kalla på funktion här som ändrar värdet av $val till matchande kommando mha grep (t.ex mem -> members)
+		# Om det finns fler än 1 alternativ skriv ut de alternativ som matchar
+		# Om det inte finns någon matchning skriv ut error och help menu för groups
+		case "$var" in
+			create)
+				echo "1"
+				createGroup
+				;;
+			list)
+				listGroups
+				;;
+			members)
+				members
+				;;
+			add)
+				addUserToGroup
+				;;
+			remove)
+				removeUserFromGroup
+				;;
+			exit)
+				break
+				;;
+			*)
+				helpGroup
+				;;
+		esac
+
+		getInput
+	done
 }
 
 
@@ -63,7 +107,7 @@ helpGroup() {
 	# Funktion skriver ut hjälp meny för grupphantering
 
 	printBanner
-	echo -e "\n+ -- --=[ Group Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ncreate\t\t\tEnters a interactive menu to create a new group\nlist\t\t\tList all groups\nmembers {group}\t\tList all member in a group\nadd {user} {group}\tAdds a user to a group\nexit\t\t\tExits to main menu"
+	echo -e "\n+ -- --=[ Group Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ncreate\t\t\tEnters a interactive menu to create a new group\nlist\t\t\tList all groups\nmembers {group}\t\tList all member in a group\nadd {user} {group}\tadds a user to a group\nremove\t\t\tRemoves a member from a group\nexit\t\t\tExits to main menu"
 }
 menu() {
 	# Skriver ut huvudmeny
@@ -77,4 +121,4 @@ main() {
 	# Main funktion - styr körning av program
 	echo ""
 }
-helpGroup
+groupMenu
