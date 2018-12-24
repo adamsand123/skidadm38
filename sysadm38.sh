@@ -2,7 +2,7 @@
 
 getInput() {
         echo -ne "\e[4msysmod38\e[0m > "        # gör blinkande
-        read val
+        read var
 }
 
 printChar() {
@@ -47,27 +47,24 @@ removeUserFromGroup() {
 	echo "removing user from group"
 }
 groupMenu() {
-	# Skriver ut grupp menyn
-
-	printBanner
+	clear
 	echo -e "\n+ -- --=[ Group Menu - Type help for more information]\n"
 	echo -e "[+] create\n[+] list\n[+] members\n[+] add\n[+] remove\n[+] exit\n"
 
 	getInput
-	while [ $val != "exit" ]; do
+	while [ $var != "exit" ]; do
 		# Kalla på funktion här som ändrar värdet av $val till matchande kommando mha grep (t.ex mem -> members)
 		# Om det finns fler än 1 alternativ skriv ut de alternativ som matchar
 		# Om det inte finns någon matchning skriv ut error och help menu för groups
 		case "$var" in
 			create)
-				echo "1"
 				createGroup
 				;;
 			list)
 				listGroups
 				;;
 			members)
-				members
+				listGroupMembers
 				;;
 			add)
 				addUserToGroup
@@ -85,6 +82,7 @@ groupMenu() {
 
 		getInput
 	done
+	menu
 }
 
 
@@ -92,33 +90,55 @@ groupMenu() {
 createUser() {
 	echo ""
 }
-addUserToGroup() {
-	echo ""
-}
 
 # ------------- HELP ---------------
+
+# Funktion skriver ut hjälp meny för huvudmenyn
 helpMenu() {
-	# Funktion skriver ut hjälp meny för huvudmenyn
-
-	printBanner
-	echo -e "\n+ -- --=[ Main Menu Help Page]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ngroup\t\t\tEnter submenu for group management\nuser\t\t\tEnter submenu for user management\nfolder\t\t\tEnter submenu for folder management\nserver\t\t\tEnter submenu for server settings\nDependencies\t\tInstall and verify optional dependencies for extra functionallity\nquit\t\t\texits to program"
+	clear
+	echo -e "\n+ -- --=[ Main Menu Help Page]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ngroup\t\t\tEnter submenu for group management\nuser\t\t\tEnter submenu for user management\nfolder\t\t\tEnter submenu for folder management\nserver\t\t\tEnter submenu for server settings\nDependencies\t\tInstall and verify optional dependencies for extra functionallity\nquit\t\t\texits to program\n"
 }
-helpGroup() {
-	# Funktion skriver ut hjälp meny för grupphantering
 
+# Funktion skriver ut hjälp meny för grupphantering
+helpGroup() {
+	clear
 	printBanner
 	echo -e "\n+ -- --=[ Group Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ncreate\t\t\tEnters a interactive menu to create a new group\nlist\t\t\tList all groups\nmembers {group}\t\tList all member in a group\nadd {user} {group}\tadds a user to a group\nremove\t\t\tRemoves a member from a group\nexit\t\t\tExits to main menu"
 }
-menu() {
-	# Skriver ut huvudmeny
 
-	printBanner
+# Skriver ut huvudmeny
+menu() {
+	clear
 	echo -e "\n+ -- --=[ Main Menu - Type help for more information]\n"
 	echo -e "[+] group\n[+] user\n[+] folder\n[+] server\n[+] dependencies\n[+] quit"
+	getInput
+	echo "Read: $var"
+	while [ $var != "quit" ]; do
+		if [ $var = "group" ]; then
+			groupMenu
+		elif [ $var = "user" ]; then
+			echo "User"
+			#userMenu
+		elif [ $var = "folder" ]; then
+			echo "Folder"
+			#folderMenu
+		elif [ $var = "server" ]; then
+			echo "Server"
+			#serverMenu
+		elif [ $var = "dependencies" ]; then
+			echo "Dependencies"
+			#dependencyMenu
+		else
+			echo "Invalid command"
+			helpMenu
+		fi
+		getInput
+	done
 }
 
+# Main funktion - styr körning av program
 main() {
-	# Main funktion - styr körning av program
-	echo ""
+	printBanner
+	menu
 }
-groupMenu
+main
