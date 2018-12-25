@@ -184,6 +184,19 @@ folderMenu() {
 }
 
 # ------------- SERVER -------------
+installSsh() {
+	echo "Installing OPENSSH server"
+
+}
+uninstallSsh() {
+	echo "Uninstalling OPENSSH server"
+}
+turnSshOn() {
+	echo "Turning SSH access on"
+}
+turnSshOff() {
+	echo "Turning SSH access off"
+}
 serverMenu() {
 	echo ""
 	clear
@@ -193,16 +206,16 @@ serverMenu() {
 	while [ $var != "exit" ]; do
 		case "$var" in
 			install)
-				installSSH	
+				installSsh
 				;;
 			uninstall)
-				uninstallSSH
+				uninstallSsh
 				;;
 			on)
-				turnSSHOn
+				turnSshOn
 				;;
 			off)
-				turnSSHOff
+				turnSshOff
 				;;
 			exit)
 				break
@@ -220,7 +233,7 @@ serverMenu() {
 # Funktion skriver ut hjälp meny för huvudmenyn
 helpMenu() {
 	clear
-	echo -e "\n+ -- --=[ Main Menu Help Page]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ngroup\t\t\tEnter submenu for group management\nuser\t\t\tEnter submenu for user management\nfolder\t\t\tEnter submenu for folder management\nserver\t\t\tEnter submenu for server settings\nDependencies\t\tInstall and verify optional dependencies for extra functionallity\nquit\t\t\texits to program\n"
+	echo -e "\n+ -- --=[ Main Menu Help Page]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ngroup\t\t\tEnter submenu for group management\nuser\t\t\tEnter submenu for user management\nfolder\t\t\tEnter submenu for folder management\nserver\t\t\tEnter submenu for server settings\nPretty\t\tInstall and verify optional dependencies for extra functionallity\nquit\t\t\texits to program\n"
 }
 
 # Funktion skriver ut hjälp meny för grupphantering
@@ -249,7 +262,7 @@ helpServer() {
 menu() {
 	clear
 	echo -e "\n+ -- --=[ Main Menu - Type help for more information]\n"
-	echo -e "[+] group\n[+] user\n[+] folder\n[+] server\n[+] dependencies\n[+] quit"
+	echo -e "[+] group\n[+] user\n[+] folder\n[+] server\n[+] pretty\n[+] quit"
 	getInput
 	while true; do
 		# FUNKTION HÄR - Tar emot input och försöker matcha mha grep till något av alternativen under
@@ -266,8 +279,8 @@ menu() {
 			server)
 				serverMenu
 				;;
-			dependencies)
-				dependencyMenu
+			pretty)
+				makePretty	
 				;;
 			quit)
 				exit 0 #exit 0 för att indikera att körnigen av skriptet gick bra (användaren valde själv att avsluta)
