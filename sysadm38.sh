@@ -114,24 +114,26 @@ menu() {
 	getInput
 	echo "Read: $var"
 	while [ $var != "quit" ]; do
-		if [ $var = "group" ]; then
-			groupMenu
-		elif [ $var = "user" ]; then
-			echo "User"
-			#userMenu
-		elif [ $var = "folder" ]; then
-			echo "Folder"
-			#folderMenu
-		elif [ $var = "server" ]; then
-			echo "Server"
-			#serverMenu
-		elif [ $var = "dependencies" ]; then
-			echo "Dependencies"
-			#dependencyMenu
-		else
-			echo "Invalid command"
-			helpMenu
-		fi
+		# FUNKTION HÄR - Tar emot input och försöker matcha mha grep till något av alternativen under
+		case $var in
+			group)
+				groupMenu
+				;;
+			user)
+				userMenu
+				;;
+			folder)
+				folderMenu
+				;;
+			server)
+				serverMenu
+				;;
+			dependencies)
+				dependencyMenu
+				;;
+			*)
+				helpMenu
+		esac
 		getInput
 	done
 }
