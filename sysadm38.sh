@@ -209,7 +209,7 @@ serverMenu() {
 				;;
 			*)
 				helpServer
-				r;;
+				;;
 		esac
 		getInput
 	done
@@ -241,7 +241,7 @@ helpFolder() {
 
 helpServer() {
 	clear
-	echo -e "\n+ -- --=[ Server Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ninstall\t\t\tInstalls the OPEN-SSH package\nuninstall\t\t\tUninstalls the OPEN-SSH package\non\t\t\t\tturns the SSH service on\noff\t\t\t\tturns the SSH service off\nexit\t\t\texit to main menu"
+	echo -e "\n+ -- --=[ Server Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ninstall\t\t\tInstalls the OPEN-SSH package\nuninstall\t\tUninstalls the OPEN-SSH package\non\t\t\tturns the SSH service on\noff\t\t\tturns the SSH service off\nexit\t\t\texit to main menu"
 
 }
 
