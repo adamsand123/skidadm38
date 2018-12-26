@@ -7,6 +7,7 @@
 	* folder menu
 	* server menu
 	* pretty menu
+* Alternativt försök få endast 1 autocomplete funktion, kolla kommentar i koden för autoCompleteMain
 * Snygga färger för text output
 
 ---- GROUPS ----
