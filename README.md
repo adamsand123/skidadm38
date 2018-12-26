@@ -1,5 +1,14 @@
 # TODO
 
+---- ALLMÄNT ----
+* Autocomplete för
+	* group menu
+	* user menu
+	* folder menu
+	* server menu
+	* pretty menu
+* Snygga färger för text output
+
 ---- GROUPS ----
 * Skapa nya grupper 
 * Lista systemets alla grupper 
@@ -27,3 +36,11 @@
 ---- SERVER ----
 * Installera och avinstallera paketet 'openssh-server'
 * Slå av och slå på möjlighet att fjärransluta till datorn via SSH
+
+---- PRETTY ----
+* menu
+* help menu
+* lista installerade dependencies
+* lista saknade dependencies
+* installera dependencies
+* avinstallera dependencies
