@@ -146,12 +146,10 @@ createFolder() {
 
 listContents() {
 	echo ""
-
 }
 
 listAttributes() {
 	echo ""
-
 }
 
 folderMenu() {
@@ -186,7 +184,6 @@ folderMenu() {
 # ------------- SERVER -------------
 installSsh() {
 	echo "Installing OPENSSH server"
-
 }
 uninstallSsh() {
 	echo "Uninstalling OPENSSH server"
@@ -227,6 +224,12 @@ serverMenu() {
 		getInput
 	done
 	menu
+}
+
+# ------------- PRETTY -------------
+
+makePretty() {
+	echo "Installera lolcat, cowsay, etc"
 }
 
 # ------------- HELP ---------------
