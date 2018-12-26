@@ -30,6 +30,57 @@ printBanner() {
 	echo ""
 }
 
+
+######## ----------- AUTOCOMPLETE FUNKTIONER ------------ ############
+
+# Autocomplete commands main menu 
+# Argument1: Command att söka efter
+# Om matchning(ar) för arguement1 hittas skrivs de ut annars skrivs ett felmeddelande ut
+autoCompleteMain() {
+	arr=(group user folder server pretty quit)
+	echo ${arr[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
+}
+
+# Autocomplete commands main menu 
+# Argument1: Command att söka efter
+# Om matchning(ar) för arguement1 hittas skrivs de ut annars skrivs ett felmeddelande ut
+autoCompleteGroup() {
+	arr=()
+	echo ${arr[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
+}
+
+# Autocomplete commands main menu 
+# Argument1: Command att söka efter
+# Om matchning(ar) för arguement1 hittas skrivs de ut annars skrivs ett felmeddelande ut
+autoCompleteUser() {
+	arr=()
+	echo ${arr[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
+}
+
+# Autocomplete commands main menu 
+# Argument1: Command att söka efter
+# Om matchning(ar) för arguement1 hittas skrivs de ut annars skrivs ett felmeddelande ut
+autoCompleteFolder() {
+	arr=()
+	echo ${arr[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
+}
+
+# Autocomplete commands main menu 
+# Argument1: Command att söka efter
+# Om matchning(ar) för arguement1 hittas skrivs de ut annars skrivs ett felmeddelande ut
+autoCompletePretty() {
+	arr=()
+	echo ${arr[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
+}
+
+# Autocomplete commands main menu 
+# Argument1: Command att söka efter
+# Om matchning(ar) för arguement1 hittas skrivs de ut annars skrivs ett felmeddelande ut
+autoCompleteServer() {
+	arr=()
+	echo ${arr[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
+}
+
 # ---------- GRUPP FUNKTIONER ---------
 
 createGroup() {
@@ -275,32 +326,39 @@ menu() {
 	clear
 	echo -e "\n+ -- --=[ Main Menu - Type help for more information]\n"
 	echo -e "[+] group\n[+] user\n[+] folder\n[+] server\n[+] pretty\n[+] quit\n"
-	getInput
 	while true; do
-		# FUNKTION HÄR - Tar emot input och försöker matcha mha grep till något av alternativen under
-		case $var in
-			group)
-				groupMenu
-				;;
-			user)
-				userMenu
-				;;
-			folder)
-				folderMenu
-				;;
-			server)
-				serverMenu
-				;;
-			pretty)
-				makePretty	
-				;;
-			quit)
-				exit 0 #exit 0 för att indikera att körnigen av skriptet gick bra (användaren valde själv att avsluta)
-				;;
-			*)
-				helpMenu
-		esac
 		getInput
+		if [ $(autoCompleteMain $var | wc -l) -eq 1 ]; then
+			var=$(autoCompleteMain $var)
+			# FUNKTION HÄR - Tar emot input och försöker matcha mha grep till något av alternativen under
+			case $var in
+				group)
+					groupMenu
+					;;
+				user)
+					userMenu
+					;;
+				folder)
+					folderMenu
+					;;
+				server)
+					serverMenu
+					;;
+				pretty)
+					makePretty	
+					;;
+				quit)
+					exit 0 #exit 0 för att indikera att körnigen av skriptet gick bra (användaren valde själv att avsluta)
+					;;
+				*)
+					helpMenu
+			esac
+		elif [ $(autoCompleteMain $var | wc -l) -gt 1 ]; then
+			echo "ERROR: To many matching options"
+			autoCompleteMain $var
+		else
+			echo "ERROR: No matching options"
+		fi
 	done
 }
 
