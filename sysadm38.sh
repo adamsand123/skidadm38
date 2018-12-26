@@ -173,7 +173,7 @@ folderMenu() {
 				break
 				;;
 			*)
-				helFolder
+				helpFolder
 				;;
 		esac
 		getInput
@@ -237,35 +237,44 @@ makePretty() {
 helpMenu() {
 	clear
 	echo -e "\n+ -- --=[ Main Menu Help Page]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ngroup\t\t\tEnter submenu for group management\nuser\t\t\tEnter submenu for user management\nfolder\t\t\tEnter submenu for folder management\nserver\t\t\tEnter submenu for server settings\nPretty\t\tInstall and verify optional dependencies for extra functionallity\nquit\t\t\texits to program\n"
+	read -p "Press any key to continue "
+	menu
 }
 
 # Funktion skriver ut hjälp meny för grupphantering
 helpGroup() {
 	clear
-	echo -e "\n+ -- --=[ Group Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ncreate\t\t\tEnters a interactive menu to create a new group\nlist\t\t\tList all groups\nmembers {group}\t\tList all member in a group\nadd {user} {group}\tadds a user to a group\nremove\t\t\tRemoves a member from a group\nexit\t\t\tExits to main menu"
+	echo -e "\n+ -- --=[ Group Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ncreate\t\t\tEnters a interactive menu to create a new group\nlist\t\t\tList all groups\nmembers {group}\t\tList all member in a group\nadd {user} {group}\tadds a user to a group\nremove\t\t\tRemoves a member from a group\nexit\t\t\tExits to main menu\n"
+	read -p "Press any key to continue "
+	groupMenu
 }
 
 helpUser() {
 	clear
-	echo -e "\n+ -- --=[ User Management Help Menu]\n\nCommand\t\t\t\tHelp Text\n-------\t\t\t\t---------\ncreate {name}\t\t\tCreate a new user\nchpass {user} {password}\tchange a users password\nlist\t\t\t\tlist all users\nattributes\t\t\tEnter sub-menu to view and modify user attributes\nexit\t\t\t\texit to main menu"
+	echo -e "\n+ -- --=[ User Management Help Menu]\n\nCommand\t\t\t\tHelp Text\n-------\t\t\t\t---------\ncreate {name}\t\t\tCreate a new user\nchpass {user} {password}\tchange a users password\nlist\t\t\t\tlist all users\nattributes\t\t\tEnter sub-menu to view and modify user attributes\nexit\t\t\t\texit to main menu\n"
+	read -p "Press any key to continue "
+	userMenu
 }
 
 helpFolder() {
 	clear
-	echo -e "\n+ -- --=[ Folder Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ncreate\t\t\tcreate a new folder\nlist {folder}\t\t\tlist the contents of a folder\nattributes {folder}\t\t\Enters sub-menu for folder attribute configuration\nexit\t\t\texit to main menu"
+	echo -e "\n+ -- --=[ Folder Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ncreate\t\t\tcreate a new folder\nlist {folder}\t\tlist the contents of a folder\nattributes {folder}\t\Enters sub-menu for folder attribute configuration\nexit\t\t\texit to main menu\n"
+	read -p "Press any key to continue "
+	folderMenu
 }
 
 helpServer() {
 	clear
-	echo -e "\n+ -- --=[ Server Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ninstall\t\t\tInstalls the OPEN-SSH package\nuninstall\t\tUninstalls the OPEN-SSH package\non\t\t\tturns the SSH service on\noff\t\t\tturns the SSH service off\nexit\t\t\texit to main menu"
-
+	echo -e "\n+ -- --=[ Server Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ninstall\t\t\tInstalls the OPEN-SSH package\nuninstall\t\tUninstalls the OPEN-SSH package\non\t\t\tturns the SSH service on\noff\t\t\tturns the SSH service off\nexit\t\t\texit to main menu\n"
+	read -p "Press any key to continue"
+	serverMenu
 }
 
 # Skriver ut huvudmeny
 menu() {
 	clear
 	echo -e "\n+ -- --=[ Main Menu - Type help for more information]\n"
-	echo -e "[+] group\n[+] user\n[+] folder\n[+] server\n[+] pretty\n[+] quit"
+	echo -e "[+] group\n[+] user\n[+] folder\n[+] server\n[+] pretty\n[+] quit\n"
 	getInput
 	while true; do
 		# FUNKTION HÄR - Tar emot input och försöker matcha mha grep till något av alternativen under
