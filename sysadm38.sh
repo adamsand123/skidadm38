@@ -37,6 +37,11 @@ printBanner() {
 # Argument1: Command att söka efter
 # Om matchning(ar) för arguement1 hittas skrivs de ut annars skrivs ett felmeddelande ut
 autoCompleteMain() {
+	# C=("${A[@]:1}")       # slice to the end of the array
+	# Kan användas så att endast 1 autoComplete funktion behövs
+	# Arg1 blir då kommando för auto complete
+	# Arg2-sista blir möjliga kommandon
+	# Ex: autoComplete D group user folder server pretty quit
 	arr=(group user folder server pretty quit)
 	echo ${arr[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
 }
