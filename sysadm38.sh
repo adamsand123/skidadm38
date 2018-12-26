@@ -145,10 +145,74 @@ groupMenu() {
 	menu
 }
 
-# ----------- USER FUNKTIONER ---------
-
+# ----------- USER FUNKTIONER --------- 
 createUser() {
-	echo ""
+	clear
+	echo -n "Enter user name: "
+	read userName
+	useradd $userName -d "/home/$userName"
+	var="notexit"
+	while [ $var != "exit" ]; do
+		echo -e "\n+ -- --=[ User Menu - Type help for more information]\n"
+		echo -e "[+] comment\n[+] home\n[+] password\n[+] group\n[+] shell\n[+] exit\n"
+		getInput
+
+		case "$var" in
+			comment)
+				echo -n "Comment: "
+				read userComment
+				sudo usermod -c $userComment $userName 
+				;;
+			home)
+				echo -n "Home directory: "
+				read userHome
+				# FELKONTROLL OM BÖRJAR MED / =?!?!?!?!
+				sudo usermod $userName -d $userHome
+				if [ $? -ne 0 ]; then
+					echo "ERROR: setting user home folder"
+				fi
+				;;
+			password)
+				sudo passwd $userName;;
+			group) ###### FIXA FUNKTION????
+				echo "Would you like to change primary or secondary group(s)?"
+				echo -e "[1] primary\n[2] secondary\n"
+				read val
+				case "$val" in
+					1)
+						echo "Primary group name or gid"
+						read primaryGroup
+						sudo usermod -g $primaryGroup $userName
+						;;
+					2)
+						secondaryGroup="notexit"
+						while [ $secondaryGroup != "exit" ]; do
+							echo "Secondary group name (type "exit" to exit)" ############## FIXA SNYGGARE !!!!!!!!!!!!!!!!!
+							read secondaryGroup
+
+							if [ $secondaryGroup != "exit" ]; then
+								echo "group is: $secondaryGroup and name is: $userName"
+								sudo usermod -aG $secondaryGroup $userName
+							fi
+						done
+						;;
+					*)
+						echo "ERROR: invalid command"
+						;;
+				esac
+				;;
+			shell) ########## FIXA SÅ ATT ALLA MÖJLIGA SHELLS LISTAS SÅ FÅR ANVÄNDAREN VÄLJA
+				echo -e "PICK A SHELLL!!!\n"
+				cat /etc/shells | grep ^/ | nl
+				echo ""
+				getInput
+				userShell=$(cat /etc/shells | grep ^/ | nl | grep $var | awk '{print $2}')
+				sudo usermod -s $userShell $userName
+				;;
+			*)
+				echo "ERROR: invalid command"
+		esac
+	done
 }
 
 passwdUser() {

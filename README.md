@@ -1,13 +1,7 @@
 # TODO
 
 ---- ALLMÄNT ----
-* Autocomplete för
-	* group menu
-	* user menu
-	* folder menu
-	* server menu
-	* pretty menu
-* Alternativt försök få endast 1 autocomplete funktion, kolla kommentar i koden för autoCompleteMain
+* försök få endast 1 autocomplete funktion, kolla kommentar i koden för autoCompleteMain
 * Snygga färger för text output
 
 ---- GROUPS ----
@@ -18,7 +12,7 @@
 * Ta bort användare från en grupp
 
 ---- USERS ----
-* Skapa användare
+* Skapa användare (snygga till funktionen + lite kanske lite fler parametrar)
 * Ändra lösenord för användare
 * Lista systemets användare
 * Visa och ändra samtliga attribut för en viss användare (allt i /etc/passwd)
