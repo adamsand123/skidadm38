@@ -8,90 +8,278 @@ C='\033[0;36m'
 G='\033[1;32m'
 W='\033[1;37m'
 Y='\033[1;33m'
-W='\033[49;39m'
+W='\033[0;49;39m'
+WB='\033[7;49;97m'
+
 
 # ---------- SEXY BANNER ---------------------
+theOvster() {
+	echo "	                                                    ..':;..    ...                                    ........                             ......''',,"
+	echo "                                                     ..''..    ...                         .........."
+	echo "                                                        .      ........           ....'''''''',,,;;,'.. ......"
+	echo "...............                                                ...   .....'',,,,;;:ccccclllclllccccccc:;;:;;::;,,''........"
+	echo ".......''',,'''''.........                                     ...  .,;,:ccllollccccccc::::::::::::;;;:ccloollc::;::::::;;;;;,,'',,'.."
+	echo ":;;,,,,,''''''''''.'...''''''...........                       .''',::::ccccclllccccccc::::;;,,;;,,,,,,,,,:lddooc::::::::::::;:::lc::;..     ..''....."
+	echo ":::::::::::::::;;;;,,,,,,'''''....''..''........................,,,;;:cloollllllllcc:::;;;;;;;;::;;;;;:;;;;;:lolool:::::::cc:::::c:,,..........,;;:cc:"
+	echo ";;;;;;;;;;;;;;;;;::::::::::::;;;;;,,,,,,'''''..''''...'''''''',;:cccccclloollccccc::;,,;;;;;::clcc:;;;;;,,,,;:cc:col::;:c:::ccc::l:;;'........';;;:::c"
+	echo ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::::::::;;;;;;,,,,,,,,,,,;cclllllllllc::::ccc::;;;:ccccc:;;,''......''',,;:::col:;:cc::ccccclc;::;,'.........',,;"
+	echo ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;::::::clllllccccc:::::cllcccc::::::;;,,',,,,'''''''''',,,;;:ol:;::;,,,,:c:ooclk0Oo,............"
+	echo ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:;;;;;;;;;;;;;;;;;,,,,,,;:cllolc::;;::cclllllllc::;;,,,,,,,''',,,,,,,,;;;;;;;;,;;;cc::c:;;,..';:llclxkdc'............"
+	echo ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:;;;;;;,,,,,,,;,,,,,,,;clloooolc::clodddolcc:::;,,;;;;,'''..'',,;::cllooooooollcc::::lol:,''''',;;,;:'..............."
+	echo ".....'''''''''',,,,,,,,,;;;;;;;;;:;,,,,,,,,,,,,;,,,,,;:loooooollloooddolc;;;;;;;;,,,''...',,;;:cldxkOO000OOOOOOkkxdolclolc;;;,';;,'..................."
+	echo ".........................''''''',,,',,,,,,,,,,,,,,,;:clloolllloddddol:;,,,,,,'.......',;;:clloddxkO0KKKK000OO00OOkkxxdolooolc:cc;,....               ."
+	echo ".................................'.............''',;;:cllllooooooooc;,;;:::;;,'''',,;:cclloodxxkkkO0KKKK000OOOOOOkkxxxxxddoooll:;,'...."
+	echo "...................................................':llooooolcllddoc::;;;;;;;,,,,;:cclloodddxxxkOOOO0KKK000OOOOOOOkkxxxxddollcc:;,'..."
+	echo "..................................................'cooodoollllloolc::;;;;;:::::cccllloddddxxxxkkO000KKKKK00OOkkkOOOkkxxdddollcc:;'......"
+	echo ".................................................'cooloolccll:;;;cllc:;,,,;::::cccloooddxkOOOOOO00KKKKKKK00OOkkkkkkkkxddddolcc:;''',,'...  ."
+	echo "................................................'clllllcccc:,....',;:;;;;::ccccclllodxkO000KKK00KKKKKK000000OOkkkkkkxxdooolcc:;,,',,'.. .  .  ."
+	echo "...............................................;lolllc:::c:,'.......'',:::ccccccclodk0KKKKXXKKKKKKKKKK000000OOOkkkkxxddoollc:;::,'....."
+	echo "..............................................:lllc::;,;:c,,;,ckkl,,,;,,'';;;:cccldOKKXXXXXXXXXXXKKKKK000Oxdddxkkkkxxdoollc:;;;;:;....."
+	echo ".................................'...........:lclc:;,..,:c;;:;ck0koccccc:;,,;:lodkO0000000KKKKKKXXXKK0Oxl;',;;;;:loxxdolcc:;,,,;;:,. .."
+	echo "...........................................';clll:,,. .:xoccclxkkkxddoooollloxk0KXXXXXXK000OOOO000OOxoc,'..........,:llc::;,,,,;;;:.  ....."
+	echo "...........................................,clllc,.'..:xkkkxxxxdxkkOOOxdxkO00KKXXXXXXXXXXXKK0Okkkkkko,''........ .....,::;;;;,,;;;:'. ....."
+	echo " ........................................':ccccc;'...:O00kdxkkkkOKKXX0OO0KKXXXXXXXXXXXKKK00OOkkkxxxd:'''....           .,;;;;;;;;;;,...'...."
+	echo "  ......................................;lllccc:,...'dKKxc:clcclkXNNXKKKXXXXXXXXXXXXXKKK0OOkxxxxxkxc'.......      ...   ..,,;;;;;;;,..''.''.    ."
+	echo " ..................................  .'colccc::,'...,kXKxc:;;cdOXNNNXXXXXXXXXXXXXXXXXKK00OOkkkkkxxc.......        ....   .',,,;;:;;,..''','... ......"
+	echo "  ....................    ...........'cll:;:::,.....;OXK0xoloOKXNNNNXXXXXXXXXXNXXXXXXKK00OOOOkkkkx:'.....         .....  ..''.',;::,.'''','..........."
+	echo "  ...............'....     .........'cll:,,;:;'.....,kXXXXX0OOKXNNNXXXXXXXXXXNNNNNNXXXKK0000OOkkxxc'.....         .'''..........';:;',;,,;'.'';cclclcl"
+	echo " ...............'''.................:ll:,';::,..''..,xXKXXKKOO0XNNNXXXXXXXXXNNNNNNNXXXXKKK00OOOOkkd;......      ..''...''.. .'.. ..',;;;:;'''':ccccclo"
+	echo " ..............'';;,''............';lol:,:llc;,'','.;kXKK00000XNNNXXXXXXXXXNNNXNNNNXXXXXKKK000OOOOkxc'..........''....';;. .'.      ..;c:;;,';:;:;,;co"
+	echo " ..'''....... .',:c;'''...........,:lol:;cool::;','';dOKKK00OO0NNNXXXXXXXXXNNXXXNNXXXXXKKKKK000000OOkdl;,''',,;,,,,;lodxd:...         .,,.....',,'',:o"
+	echo "  ..'..........,;::,,''..........';ccol;,;::cc:,,;;,:lx0K0Okdd0NXXXXXXXXXXXXXXXNNXXXXXKKKKKKKKKK000OOkkxooooolccldxOKXK0Oo'.          ..'.....,;;;::lo"
+	echo "  ..'.....'',,,,;;;,,,''.........':c::,..'',,,,;cccclx0KXX0kdOXXXXXXXXXXXXXXXXXXXXXXXXKKKXXXKKKKK000OkkxolllcclxOKXXXXKKOx:.          ..'..,'';;;::;,,"
+	echo "..... ..,,,,,',,;;;,,,,,''.. ....,::,'....''',,:lloxkKXXNNNXXNNXXXXXXXXXXXXNNNXXXXXXXXXXXXXXXXKKK00OOkxolc:lx0KXXXXXKXKK0ko'          ....''....'',;;'"
+	echo ".......,,;;,,,,;;;;,,,,''.. .....'::'.....''',cddlxOKXNNNNXNNXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXKK000Okdoc::cxKXK0OOkkOKK0kdl;.         .............'::"
+	echo "...'',;;;;,,,,,,;;,'''''.........',;'......',:lxxxOKNNNNNXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXKKK0OOkdlcccodO0ko,.'',lO0kd:,'.         ............',,,"
+	echo ".....','',''',,,,,'...............',,'.';,,,;:oxO0KNNNNNXXXXXXXKKKXXXXXXXXXXXXXXXXXXXXXXXXXXKKK0Okxdoodxxxxxxdc;;:loddo:;'..          .........','...."
+	echo ".....',......''''............... ...,;,;;,',:ok0KNNNNNNXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXKKKK00Okkxxxkkxxxxxkkkkxdl:,....''.          ........',..  .."
+	echo "..';::;,',,,,;,,,,'...'',;;,'''......';:;;:lkKXXNNNNNNNXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXKKKKK00OkkkkkOkkxxdddxkkkxl;'......''.       .......'.. ...... ."
+	echo "  ................... ..........   ....';lxOKXNNNNNNNNNXXXXXXXKKXXXXXXXXXXXXXXXXXKKKKKKKKK00OkxxkOkkxddddxxkOkxo:'.......','.   ....'......'.........."
+	echo "  ...         ...................   ...'lO0KKXNNNNNNNNNNXXXXXXKXXXXXXXXXXXXXXXXXKKKKKKKK000Okxxkkxolllooddxkkxxd:.......',,'..'''.,::;;,,;,''.......;:"
+	echo "..........';:cllodxkkOOOxoc;',,'......;d0KXXXNNNNNNNNNNNXXXXXXXXXXXXXXXXXXXXXXXKKKKKKKKK00Okxdoool:,......',,:cc:'.....',,,,,,,,,'';;;,'',,'.....'lk0K"
+	echo "......,cdOKNNNNNNXXXXXXXXKOd:,,''....,dKXXXNNNNNNNNNNNNXXXXXXXXXXXXXXXXXXXXXXXXKKKKKKK000Okxdlclodddl:,.    ...'.......';:;;;::;:c,.cl,.';;,;,,''lKNNN"
+	echo "..'':d0XWWWWWNXXXXK00OOOOOOkdc,'....'oKXXNNNNNNNNNNNNNNXXXXXXXXXXXXXXXXXXXXXXKKKKKKK0000OkxdooodxxxOkxd:.      .......',:c:::::::;..,,,.'cc,,,,,:okXNN"
+	echo "..;l0NNNNNNNXXXXNNNXK0OOkkxddo:....'l0XXNNNNNNNNNNNNNNXXXXXXXXXXXXXXXXKKKKKKKKKK0000000OOxddddddoookOkdo,.     .........'''.'',,,'..'....''....'codx0X"
+	echo "..c0NXKXXXXKXNNNXXNNXK00OOOkxdo:...'lOXXNNNNNNNNNNNNNNNXXXXXXXXXXXXXXXKKKKKKKK0000000K00kxxxddollloxOOxo:'..........'.  ......''...............':ooodk"
+	echo ";ckXXXXXNNXKXNNNXKXNNNXK0Oxxddddl,.':xKXNNNNNNNNNNNNNNXXXXXXKKKKKXXKKKKKKKKKK000O00KKK00Okkxdol::ccoddol:'.........''.      ..... ..      . ......',,,"
+	echo "XNNNNNXXXXXKKKNNXKKXNNNNX0Oxddoool'.;lxKNNNNNNNNNNNNNXXXXXXXKKKXXKKKKKKKK00K00000000KKK0Okxxdoc,',;;;',,,'...........'.       ...         ."
+	echo "NNNNNXK00OOO0KKXNXKKXNNNNXKOxddol;. .;o0NNNNNNNNNNNNXXXXXXXXXKKKKKKKKKKKK000000000000KK0Okxxdoc;;::,...................                   ."
+	echo "XXXXXXXKK00OOO00KXXK0KXNNNXK0kddl.   .:kXNNNNNNNNXXXXXXXXKKKXKKKKKKKKKKK00000000OO000000Okxxdoollc:;.................''.                  ."
+	echo "XXXXXXXXK0000OOkO0KXK00XNNNXK0kxd;    .cOXNNNNNNNXXXXKKKKKKKKXKKKK0KKKKK00000000OOOOkOOOOkkxdddol:,'...............'',.                   ."
+	echo "KKKKKKXXK000000OkxkKXX00KNNNXKKOxo,    .:kXXXXXXXXXXKKKKKKKKKKKKKK00000000000000OOOkkxxOOkkxdddol;'...............''''."
+	echo "000000KKKK0000000Oxx0XX00KXNNXXKOxo'    .,xKXXXXXXXKKK000KKKKKKKK000000000000000OOOkkdodxxxxdool:,'...............'''."
+	echo "00000000KKK0OO00000kxOKX0O0XNNXX0kxo'     .o0XXXXXXKK000000KKK000000OOO00OOOOOOOOOkkkdocldxxolc:,'................','"
+	echo "0000000KKKK000000000Odd0X0O0XNNXX0kkd,     .;x0KKKKK000000000000OOOOOOOOOOOOOOOOOOkkkxoc;;:c:;,'.................'',."
+	echo "K00OOO0KKKKKKKK000000OdokKKOOKNNXK0Okx;.     .ck000000000000000OOOOkkkkkkkkkkkkkkkxxxdoc;''.....................'',,."
+	echo "000OOOkkkO0KKKKKKK00OOOxld00OOKNNXK0OOx,      .'cxOOO000000OOOOkkkxxxxxxxxxxxdddxxddool:,'.....................'',,,."
+	echo "kO0000OOkxdkO0KKKKKK00Okdclk0OOKNXXK00Ol.       .'cdkOO000OOOkkkxxddddddoollllcclllcc:::;,,,''''.............''',,;'"
+	echo ",cdO0000Okxoldk0KKKK000OkxlcdkkOKNXXK0Oo.         ..:okOOOOOOkxxddoooooolc:::;;;;;;;;;:looolccc;''''''.'''''.....','........                     .."
+	echo "...;ok000OOkdocox0KKK000OOkolokO0XXKKK0kl,'....... ...;lxOOkkxxdolcc::::;;;;;;;;;;;,',lddxoc:::,.'',,'''''....................'',,'.          .:ccc:;,"
+	echo ".....,cd000OOkdccok00000OkkO00K0KKKKKKKKKK00OOOkkxdl:'..':oxxdolc:;,,''''',,,,,,,;,'':xxdoll:;:clodxxdlcc::::;;;;,''';c:,,'..',;:lo;          .''....."
+	echo "........;x000OkxoccoxOOOOO0XNXKKKKKKKKK0KKKKKKKKKK0Oko:,'..';clc:;'.........'''''....lxxxc:c;:ldkXWWNKxolllllllllllllodollcccc:cllol'         ..  ...."
+	echo ".....   ..l0K0Okkxoccoxk0XNNXXKKKKK00000KKXXXXXXXK00kdolc:,'.....................   'oxxxdlcccloxOK0kdllc::cc:::ccccclollllllooodddd;          ."
+	echo "......    .cOKKOOkkxolcxXNNNXK00OOOOOOOOOO0KXNNNXXK00Okxdolcc;'.       ........     ;dxxddxxxxxxkOkxdoooolcccc::c:::cccccccccllloddxc."
+	echo ".......   ..:OXK0OOkxdxKNNXKOxdxkkkkOOOO00KXNNNXXXXKOkxxdoolllcc;..          ...,;codxxxddxxxxkkkkkkkkkxxxxxddoooolloolllllllllloodxl."
+	echo ".. ......  ..:OXK0Okxx0NXK0OkkO0XXXNNNNNNNNNNNNNXXXKOdlloooooolccc:,..  .:odxkOKXXXXOdxxdooddxxkkkxxxxxxxxxxxxxxddddddoooooooooooood:."
+	echo "... .....   ..:0XK0OddOXK0KXXNNNNNNNNNXXXXXNNXXXXXXKOdc:clloooollccc:;';xKXXXNNNXXXX0xdxdoooodxxkxkkxxxxddddddddddddoollllllllllllol."
+	echo "...  ..  .  ...lKKOkxdx00KNNNNNNNNNNXXXXXXXXXXXXXXXK0kdoooooooooolccccccloxxkOKXXXK00kddddooooodxxxxxxxxxddddddddddoooollccccccccll,"
+	echo "....  ..    .. .oOxoxkdk0XNNNNNNNXXXKKK0000KXNNNNNNXK0Okxdooooooolllllllcccccclodddxxdlloddoooooodxxxxxxddddoooooooooollllcccccccc'               ..."
+	echo "  ...  .    ..  .lkxdkkxOKXXKKKK00OkkkxdodOXNNNNNNNNXKOxddoooollloooooddocccccclcc:::c:;;:looooolooddxdddooollllllllllcccccccccc;.....            .cc,"
+	echo ".      ..   ..   .:kOxxkOKXKOOkkxdodxxkO0XNNNNNNNNNNX0xolooooolllooodddddolcc::ldddolc::;,,;:coooooooooolllccccccccccccc:cccc;,'.....      ..      ,l;"
+	echo "..      ..  ...    'dOOdxKKOxoooxk0KXNNNNNNNNNNNNNNXKOxollooooooooooodddddxxxkO0KXXKK0Okkddooodxxdoooolllccc::::::::::::::;,.......  ........   ..  .'"
+	echo " ..      .   ..    ..;xOkO0kxxOKNNWWWWNNNNNNNNNNNXXK0OOkxdoooooooooodxkO0KXNNNNNNNXXK0000OO0KXXKK0Okxdolccllcccc:,,,'.......  .... .........   ...   ."
+	echo "   .         ..    .. .lOOOkkXNNNNNNNNNNNXXXXKKKKKKKKK0Oxdlllooolldk0KNNNNNNNNNNNNXXKKKK0000KKXXXXXKK0Okdooooooc.  .     ..   ..............  ..."
+	echo "    .        ..   ..   .:kKOOXNNNNNNNXXKKK0kxookKXXXXK0OdlccloodxOKNNNNNNNNNNNNNNNXXXKK00000KKXXXXXKK000OOOxlc:.   .     ..  ............... ...."
+	echo "..                ..   ..'d0KKKKXXXKK0OkkkkkxxOKNNNXXKOxollodxOKXNNNNNNNNNNNNNNNXXXXKKK0kdxO0KKXXXXKKK00OOOko;,..        .. ...................."
+	echo "...               ..   .. .cOK0000OkkOO0KXNNNNNNNXXXKKOxoldk0XNNNNNNNNNNNNNNNNNXXXK00000OxxxkO00KKKKKKK0OOOko;',,.       .  .................."
+	echo "...              ..    ..  .,x00Okk0KXNNNNNXXXXXXXXXK0kxxOKNNNNNNNNNWWWWWNNNNNNXXK00OkOOOOOOOOOOOOkkkOOOkkxo:,',,,'.    ..  ...............         .."
+	echo " ....            ..    ..    .:xkOXXXXXXXXXXKKKKKK0000KXNNNNNNNNNNWWWWWWWNNNNNNXK0OOkkkkxkkOO000OOkkkxxdoll:;;;;,,,'.      .............    .........."
+	echo "..  ..             .   ..      .lKXKKKKXXXKKK00OkOO0XNNNNNNNNNNNNNWWWWWWWWNNNNXK0OOOkkkkkkkkOO0OOOkkxddlc:;;:cc:,',,'.    ............................"
+	echo "...               ..   .        'kK0000000OkxddxOKXNNNNNNNNNNNNNNWWWWWWWWWNNNNXKK000OOOkkkkkOOOOOOkkxolcccc;',,'''',;;,,'............................."
+	echo "                   .  ..        .:k0Okkxolloox0XNNNNNNNNNNNNNNNNNWWWWWWWWWNNNNXKK00OOOkxddxkOOOOOOkkxdlcclo:......,:cccccc::::;;,,'''''..............."
+	echo "                      ..        ..';:;;,,lk0XNNNNNNNNNNNNNNNNNNNNWWWWWWWWWWNNNXK0OOOkxdl;;coxkkkkkkxxdoolll:'''..,coolllllllooddddollc:;,'............"
+	echo "..                   ..         ..   .':d0XNNNNNNNNNNNNWWWWWWWWWWWWWWWWWWWWWWNXK0Oxxxxxdolccllloooddoollc:,,;lolloddddoooooooodddxxxxkxxdolc:,''''...."
+	echo "....                 ..         .. .,oOXXNNNNNNNNNWWNNNNNWWWWWWWWWNNNWWWWWWWNNX0Oxollodxxxxxxxdlc;;;;;;,'',ccoxxxxxxxddddddddoodddxxxkkkkkkkkxdooc:'.."
+	echo ".. ..                .     .   ...;dKXNNNNNNNNNNNNNNNNWWWWWWWWWWWWNNNNWWWNNNNXK0kdooooddddxxxddol;'......':lcokkkxxxxxxxdddddddddxxxxxxkkkkkkkkkkkkxdl"
+	echo ".                         .. ..;lkKXNNNNNNNNNNNNNNWWNNWWWWWWWWWWWWNNNNNNNNNXXK0Oxdolllloodxxxdol:,'''.',,,,:cldddddddddddxdddddddddddxxxkkkkkkkOOkkkkk"
+	echo ".                       ....':d0XXXNNNNNNNNNNNNNNNNNNNNNNNNNNWWWWWNNNNNNNNXKK0Oxdc;,,;:codxxxdoc;,'''';:,,,:::;;;::::::::ccclloooddddddxxxxkkkkkkkkkkk"
+	echo ".                       ..;okKXXNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNXKKOkdc,.....:oxxxdol:,'''.';;;;;:cc:;;;;;;;;;;;;;;;;::ccllooddxxkkkkkkkkkkk"
+	echo "                     ..':dOKXXXXNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNXXK0ko:,'.....,lolc:;,''..',;;,;:::clllcc:;;,;;;;;;;;;;;;;;:::clloddxkkxkkkk"
+	echo "                   .':ok0KXXXNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNWWWNNNNXX0ko:;,'',,,,''.......';;::::::ccclolcc:;,,,,,,;;;,;;,;;;;;;;;::::clloddxx"
+	echo "                 .':dk0XXXXXXXNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNWWNNNXK0kd:''..'',;:,'...';::cc::::ccccc::::::;;;,,,,,;;;;;,;;;;;;;;;;;;;;;:::ccl"
+	echo "               ..;lkKXXXXXXXXXXNNNXXNNNNNNNNNNNNNNNNNNNNNXXXXXNNNNNNNNNNXK0Okdc,....''',,'''..;lcc::::;;;;;;;:cclc:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:"
+	echo "..           ..;cx0XXXXXXXXXNNNNNNNXXXXNXXNNNNNNNNNNNNXXXXXXXXXXXXXXXXXK0Okxdl;,'..'''''.''.';clc::;;;;;;;;;;;::;;;;;::::::::::;;;;;;;;;;;;;;;;;;;;;;;"
+	echo "..         .';lxOKXXXXXNXXXXNNNNNXXXXXXXXXNNNNNNNNXKXXXXXXKKKKKKKKKKKK00kxdol;,''........',;;;;;::cc::;;;;;:c:;;:::cccc::::::::::;;;;;;;;;;;;;;;;;;,;;"
+	echo "         .,:lx0KKXXXXXXXNNXXXXXXXXXXXXXXXNNNNNNXXXKOkO0KKKKKKKK0000OOOOkxdlc;'.',;;,'..;oxdl:;;;;,,,',;;;;;::::;::;;;;;;;;;;;:::::;;;;;;;;;;,,,,,,,,,,"
+	echo "      ..,cok0KXXXXXXXXXXNNNNXXXXXXXXXXXXXNXXXKKK00Odc:lodxkOOOOkkxxdooloooc:cloxkkdc:,.,dOdc::::;;;. ..',,;;;;;;;;;;;;;;;,,,;;;:::::;;;;;;;;;,,,,,,,,,"
+	echo "    .';ldOKKKKKKXXXXXXXXXNNXXXXXXXXXXXXXXKKOkkkkxdl:,'.'cdxdolc:;;,,,'',;;lx0XXKOdc;;,..;lc;,,,;,,,.   ..',,;;;;;;;;;;;;;;;,,,;;;:::::::;;;;;;,,,,,,,,"
+	echo " ...,cdO0KKKKXK0KXXXXXXXXXXXXXXXXKKKXXXXK0kdolllc;''..'lkkxxc,.....,;''','lk0XKko:,,,'..';;,''''''.      ..',;;;;;;;;;;;;;;,,,,;;;;::::::::;;;;;;,,,,,"
+
+}
+
 mrCPC() {
+	echo -e "$WB"
 	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%##%%%%%%%%%%##%%%%###%%###%%##//(###((##%%%%%%%%%%%%%%%%%%%o%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&%#((#%%%%%###%&&&&%%%%%&&&&&%%%%%##%%%%###%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&%%##%%%%%%%%%%&&&&&%&&&&&&&&%%&&%%%%%%%%###%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&%%%&&&&&&&&&&&&@@@@&&&&&&&&&&&&&&%%%#%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%%%%%%%%%%%%&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&@@@@@@@@&&&&&&&&&&&&%%%%###%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%%%%%%%%%%%%&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&@@@&&@@&&&&&&&&&&&&&&&%%%%#%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%%%%%&&&&&&&&&&&&&&&@@@&&&&&&&&&&&&&&&&&&&&@@@@&&&&&&&&&&&&&&&&&&&&%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%%%&&&&&&&&&&&&&&&&&@@@&&&&&&&&&&&&&&&&&&&&@@@@&&&&&&&&&&&&&&&&&&&&&&%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%&&&&&&&&&&&&&&&&&&&@@@@&&&&&&&&&&&&&&&&&&&&@@@@&&&&&&&&&&&&&&&&&&&&&&&%%###%%##%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%&&&&&&&&&&&&&&&&&&&&&@@@@&&&&&@@&&@@@@&&&&&&@@@&&&&&&&&&&&&&&&&&&&&&&&&&%###%####%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%&&&&&&&&&&&&&&&&&&&&@@@@&&&&@@@@@@@@@&&&&&@@&&&&&&&&&&&&&&&&&&&&&&&&&&&%%%%%%###%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%&&&&&&&&&&&&&@@@@@@@@@@@@@@@@@@@@@@@&&&&&@&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&%%%%#%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%&&&&&&&&&&@@@@@@@@@@@@&&&&&&&&&&&&&&&&&&&&&&@@&&&&&&&&&&&&&&&&@@@&&&&&&&&&&&%%%%%###%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%&&&&&&&&@@@@@@@&&&%####((((((#########%%%&&&&&&&&&&&&&&@&&&&@@@@@&&&&&&&&&&&&%%%#(((#%"
+	sleep 0.1
 	echo "%%%%%%%%&&&&&&&&&@@@@@@@@@&%%#((////////////(((((((###%%&&&&&&&&&&&&&&&&@@@@@&&&&&&&&&&&&%%%####%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%&&&&&&&@@@&&&%#(///*******************/////((#########%%%%&&&&&&&&&&&&&&&&&&&&%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%&&&&&&&&&%#///*****************************///////////(((((###%%&&&&&&&&&&&&&&%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%##%&&&&&&&%%(/*******,,,,,,***********************////////////(((##%%%&&&&&&&&&&&&&&%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%&&&%(//****,,,,,,,,,,,,,,,,**********************///////////////((((#%&&&&&&&&&&%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%&&%#/,,,,,,,,,,,,,,,,,,,,,,,,,,**************************///////////(#%&&&&&&&&&%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%####%##/,...,,,,,,,,,,,,,,,,,,,,,,,,,,************************************/(%%&&&&&&%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%######((*.....,,,,,,,,,,,,,,,,,,,,,,,,,*************************************/((%&&&&%%%%%#%"
+	sleep 0.1
 	echo "%%%%%%%###((/**,. ...,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*********************************//(%&&&&%%%%%%"
+	sleep 0.1
 	echo "%%%%%%#(((/**,,.. ....,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*,******************************/(%&&&&%%%%%"
+	sleep 0.1
 	echo "%%%%%%((//**,,,.. ......,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*****************************(#&&&&&%%%%"
+	sleep 0.1
 	echo "%%%%%#//**,,,...    ....,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*,**************************//#%%&&&&&%%"
+	sleep 0.1
 	echo "%%%%%(/*,,,.....    ....,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*********************/////#%%&&&&&%%"
+	sleep 0.1
 	echo "%%%%%(/*,,...       ..,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,****************///////(%%&&&&&%%"
+	sleep 0.1
 	echo "%%%%%(/*,,.         ....,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,************/////////(##%&&&&%%"
+	sleep 0.1
 	echo "%%%%%(*,...         ....,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,************/////////(((%&&&&%%"
+	sleep 0.1
 	echo "%%%%%#*,............,*(((#########(((//*****,,,,,,,,,,,,,,,,,,,,,,,,,**********//////////((#&&&&%%"
+	sleep 0.1
 	echo "%%%%%#/,..,*********/(###%%%%%%%&&%%%##(///***,,,,,,,,,,,,,,,,,,,,,,*************////////((#&&&&&%"
+	sleep 0.1
 	echo "%%%%%%/,,,/####%%###((((((((((##%%%%%%%%####(***,,,,,,,,,,**//(###########((((/**////////((#&&&&%%"
+	sleep 0.1
 	echo "%%%%%%/,,,(#%%%%%###(///((((((((((((#%%%%###(/**,,,,,,,****(##%%&&&&&&&&&&%%%%#//////////((#&&%%#%"
+	sleep 0.1
 	echo "%%%%%%((##%%%%%%#####(###%&%%%%%##((####%%%%%###((///(((((#%%%%&&&&&&&&&&&&&&%%%%#///////((#%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%&&&%%&&%%&%%%%%%##%%%&&&&&%%%####%%%%%%%%%%%%&%%%%%%%%%#%%%&%#%%&&&%%%%%%%#(((///((#%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%&&&%%%&&&&&&&&&&&%%%&&&&&&&&&&%%%%%%%%%%%%%%&&%%%%%#####(#&&/##&&&%%####%%%###((##%%%%%%%"
+	sleep 0.1
 	echo "%%%##(//***#%%%%&&&&&&&&&&&@@@@@@@&%###%&&&%%%%%%%%%%%%&&&&&%%###%%#/*((#%%%%(///(%&&&&&&%%%%%%%%%"
+	sleep 0.1
 	echo "%%#//,,...,#%%%%%%%%%&&&&%&&&@@@@@///#&&&%%%##((#%%%&&&&&@&&%%%%%#/*//((####%####%&&&&&%%%%%%%%%"
+	sleep 0.1
 	echo "(*,.....  ,##((((####%%%%&&&&&&&&&&%#((/#&&%#(****/##%&@&(((%&@@@@&&&&&%%&&&@&&%%&&&&&&%%%%%%%%%"
+	sleep 0.1
 	echo "(*.....   ,##***/(####%%%%&&&%&&&&&&%##/#%%%(*,,,,/##%&&&&%/**(&@@@@@@@@@@@@@@@&&%%&&&&&&%%%%%%%%%"
+	sleep 0.1
 	echo "/,.....   .(#//,,*//((((((%&&&&&&&&%#((/###/*,,,,,*((%&&&&&%(((%@@@@@@@@@@@@@@@@@&&&&&&&&%%%%%%%%%"
+	sleep 0.1
 	echo "*....,..  .,(##/****/(###(#%%%%#####(##%#//,,,,,,,,**#&&@@@%((/#&@@@@@@@@@@@@@&&&&&&%%###%%%%%%%%%"
+	sleep 0.1
 	echo "*....,.... .*(((//**//((##########((#%%#/,,,,,,,,,,**(%&&&&%(((%&@@@@@@@@@@@@&&%%%&&%%(//((%%%%%%%"
+	sleep 0.1
 	echo ",..,,,.........,/((((####(###########((*,....,,,,,,**/#&&&&%%%%%&&&@@@&&&&&&&&%%%%&#/*/((#%%%%%%"
+	sleep 0.1
 	echo "...,,,..........,,**/(((##########((/**,.....,,,,,,***(%&&&%##%%&&&&&&&&&&&%%%%%%%&%((**/((%%%%%%%"
+	sleep 0.1
 	echo ".....,,.................,,,,,,,,,,,,,,,.....,,,,,,,,,*/(%%%%%%%%%%%%&&%%%%%%%##%%%%(****/##%%%%%%%"
+	sleep 0.1
 	echo ".....,,........................,,,,,,.........,,,,,****////(##%%%%%%%%%%%%%%%%%%%#/*****(%%%%%%%%%"
+	sleep 0.1
 	echo ".....,,........................,,,,...........,,,,,*********//((###%%%%%%%%%%##((/*****/#%%%%%%%%%"
+	sleep 0.1
 	echo ",,,,,*,,.......................,,,..............,,,,,*****,,,,,,,,,,,******************#%%%%%%%%%%"
+	sleep 0.1
 	echo "(((((/,,,,.....................,,,,,,,,.........,,,,,,****,,,,,,,,,,,,,,,,,,,**********(%%%%%%%%%%"
+	sleep 0.1
 	echo "%%&%%(*,,,,,....................,,,*////*,,,,,,,******,*,,,,,,,,,,,,,,,,,,,,,*****//***(%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%(*,,,,,,...................,,,,*///********/////***,,,,,,,,,,,,,,,,,,,,,*****//**/#%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%(*,,,,,,,,................,,,*******///**///////***,,,,,,,,,,,,,,,,,,,******/(/**(%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%(*,,,,,,,,,.........,,,,************///////(((((/**,,,,,,,,,,,,,,,,,,*****//((///#%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%#/*,,,,,,,,,.......,,***************//(/////(((((/***,,,,,,,,,,,,,,,*****/((##(##%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%#/***,,,,,,,....,,,***************,***/*****//////////***,,,,,,,,,,***///(##%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%#(****,,,,,,....,,,***************************///////////*,,,,,,,****///((##%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%#///*****,,...,,*****////(((((///////////////////////((((/*,,,,***//(((##%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%#///*****,,,,,,,*****//((#%%%%#//******///((((((////////(/*,,,*///(((###%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%#(///*****,,,,,,*******///(((#(((/******///////(////////(/*****/((((####%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%(////****,,,,,***,,,,,,**,,,****/////************//(////(/***/(#######%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%(((//****,,******,,,,,,,,,,,,,*************//////((/////(/***/(#######%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%((((//*******//**,,,,,,,,***,,,,,**********////(///*///(/////(#####%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%#((((/********/***,,,,,,,******************//////***///(////((####%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%&%#(((#(///**********,,,,,,**/(((((/////////////*/***//((((((((####%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%&&&(((##((///////*******,,,,,*/(###%%%%####((/*****//((##(((((##%%%&&%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%&&&((((#((((/////********,,,,,*/((#%%%%##(((/*****///((##(((###%%&&&&%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%&&&((//((((/(((//////////*********/(##(//*******/////((#####%%%%&&&&%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%&&&/////((((((((///////////********//////*****///////((((##%%%%&&&&%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%&%(//*/////((((((((((((((((//**********//((((/////((((###%%&&&&&&%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%&%(//***////(((##((((((((((/////*******/(((#(((((((((##%%%&&@@&&%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%&%(**********//(#%%%#####(((((((((////(((##########%%%%&&&&&&&%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%(//***********/##%%%%%%##########((((#####%%##%%&&&&&&&&&%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%#((//*********///#%&&&%%%%%%%%%%%######%%%%%%%%&&&&&&&&%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%##((////////(###%%&&&&&&&&&&&&%%&&&&&&@@@&&&&%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%%%%%###((((((((((##%%%%&&&&&&&&&&&&&&&&&&&%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%###((////////((####%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%##(////((((#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
 	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%##((####%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	sleep 0.1
+	echo -e "$W"
 }
 banner() {
 	clear
@@ -482,10 +670,11 @@ menu() {
 
 # Main funktion - styr körning av program
 main() {
-	#mrCPC
-	banner
-	printBanner
-	menu
+	mrCPC
+	theOvster
+	#banner
+	#printBanner
+	#menu
 }
 
 main
