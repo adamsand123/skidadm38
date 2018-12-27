@@ -33,57 +33,12 @@ printBanner() {
 
 ######## ----------- AUTOCOMPLETE FUNKTIONER ------------ ############
 
-# Autocomplete commands main menu 
-# Argument1: Command att söka efter
-# Om matchning(ar) för arguement1 hittas skrivs de ut annars skrivs ett felmeddelande ut
-autoCompleteMain() {
-	# C=("${A[@]:1}")       # slice to the end of the array
-	# Kan användas så att endast 1 autoComplete funktion behövs
-	# Arg1 blir då kommando för auto complete
-	# Arg2-sista blir möjliga kommandon
-	# Ex: autoComplete D group user folder server pretty quit
-	arr=(group user folder server pretty quit)
-	echo ${arr[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
-}
-
-# Autocomplete commands main menu 
-# Argument1: Command att söka efter
-# Om matchning(ar) för arguement1 hittas skrivs de ut annars skrivs ett felmeddelande ut
-autoCompleteGroup() {
-	arr=()
-	echo ${arr[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
-}
-
-# Autocomplete commands main menu 
-# Argument1: Command att söka efter
-# Om matchning(ar) för arguement1 hittas skrivs de ut annars skrivs ett felmeddelande ut
-autoCompleteUser() {
-	arr=()
-	echo ${arr[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
-}
-
-# Autocomplete commands main menu 
-# Argument1: Command att söka efter
-# Om matchning(ar) för arguement1 hittas skrivs de ut annars skrivs ett felmeddelande ut
-autoCompleteFolder() {
-	arr=()
-	echo ${arr[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
-}
-
-# Autocomplete commands main menu 
-# Argument1: Command att söka efter
-# Om matchning(ar) för arguement1 hittas skrivs de ut annars skrivs ett felmeddelande ut
-autoCompletePretty() {
-	arr=()
-	echo ${arr[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
-}
-
-# Autocomplete commands main menu 
-# Argument1: Command att söka efter
-# Om matchning(ar) för arguement1 hittas skrivs de ut annars skrivs ett felmeddelande ut
-autoCompleteServer() {
-	arr=()
-	echo ${arr[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
+# funktion som matchar en delsträng med andra strängar
+# argument1 - delsträng som ska matchas med andra strängar
+# argument2-sista - delsträngar som första arguementet ska matchas med
+autoComplete() {
+	commands=$(echo $@ | awk '{for(i=2;i<=NF;i++) print $i}')
+	echo ${commands[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
 }
 
 # ---------- GRUPP FUNKTIONER ---------
@@ -117,30 +72,39 @@ groupMenu() {
 		# Kalla på funktion här som ändrar värdet av $val till matchande kommando mha grep (t.ex mem -> members)
 		# Om det finns fler än 1 alternativ skriv ut de alternativ som matchar
 		# Om det inte finns någon matchning skriv ut error och help menu för groups
-		case "$var" in
-			create)
-				createGroup
-				;;
-			list)
-				listGroups
-				;;
-			members)
-				listGroupMembers
-				;;
-			add)
-				addUserToGroup
-				;;
-			remove)
-				removeUserFromGroup
-				;;
-			exit)
-				break
-				;;
-			*)
-				helpGroup
-				;;
-		esac
-		getInput
+		numberMatches=$(autoComplete $var "comment" "home" "password" "group" "shell" "exit" | wc -l)
+		if [ $numberMatches -eq 1 ]; then
+			var=$(autoComplete $var "comment" "home" "password" "group" "shell" "exit")
+			case "$var" in
+				create)
+					createGroup
+					;;
+				list)
+					listGroups
+					;;
+				members)
+					listGroupMembers
+					;;
+				add)
+					addUserToGroup
+					;;
+				remove)
+					removeUserFromGroup
+					;;
+				exit)
+					break
+					;;
+				*)
+					helpGroup
+					;;
+			esac
+			getInput
+		elif [ $numberMatches -gt 1 ]; then
+			echo "ERROR: to many matching options"
+			autoComplete $var "comment" "home" "password" "group" "shell" "exit"
+		else
+			echo "ERROR: No matching options"
+		fi
 	done
 	menu
 }
@@ -156,62 +120,70 @@ createUser() {
 		echo -e "\n+ -- --=[ User Menu - Type help for more information]\n"
 		echo -e "[+] comment\n[+] home\n[+] password\n[+] group\n[+] shell\n[+] exit\n"
 		getInput
+		numberMatches=$(autoComplete $var "comment" "home" "password" "group" "shell" "exit" | wc -l)
+		if [ $numberMatches -eq 1 ]; then
+			var=$(autoComplete $var "comment" "home" "password" "group" "shell" "exit")
+			case "$var" in
+				comment)
+					echo -n "Comment: "
+					read userComment
+					sudo usermod -c $userComment $userName 
+					;;
+				home)
+					echo -n "Home directory: "
+					read userHome
+					# FELKONTROLL OM BÖRJAR MED / =?!?!?!?!
+					sudo usermod $userName -d $userHome
+					if [ $? -ne 0 ]; then
+						echo "ERROR: setting user home folder"
+					fi
+					;;
+				password)
+					sudo passwd $userName;;
+				group) ###### FIXA FUNKTION????
+					echo "Would you like to change primary or secondary group(s)?"
+					echo -e "[1] primary\n[2] secondary\n"
+					read val
+					case "$val" in
+						1)
+							echo "Primary group name or gid"
+							read primaryGroup
+							sudo usermod -g $primaryGroup $userName
+							;;
+						2)
+							secondaryGroup="notexit"
+							while [ $secondaryGroup != "exit" ]; do
+								echo "Secondary group name (type "exit" to exit)" ############## FIXA SNYGGARE !!!!!!!!!!!!!!!!!
+								read secondaryGroup
 
-		case "$var" in
-			comment)
-				echo -n "Comment: "
-				read userComment
-				sudo usermod -c $userComment $userName 
-				;;
-			home)
-				echo -n "Home directory: "
-				read userHome
-				# FELKONTROLL OM BÖRJAR MED / =?!?!?!?!
-				sudo usermod $userName -d $userHome
-				if [ $? -ne 0 ]; then
-					echo "ERROR: setting user home folder"
-				fi
-				;;
-			password)
-				sudo passwd $userName;;
-			group) ###### FIXA FUNKTION????
-				echo "Would you like to change primary or secondary group(s)?"
-				echo -e "[1] primary\n[2] secondary\n"
-				read val
-				case "$val" in
-					1)
-						echo "Primary group name or gid"
-						read primaryGroup
-						sudo usermod -g $primaryGroup $userName
-						;;
-					2)
-						secondaryGroup="notexit"
-						while [ $secondaryGroup != "exit" ]; do
-							echo "Secondary group name (type "exit" to exit)" ############## FIXA SNYGGARE !!!!!!!!!!!!!!!!!
-							read secondaryGroup
-
-							if [ $secondaryGroup != "exit" ]; then
-								echo "group is: $secondaryGroup and name is: $userName"
-								sudo usermod -aG $secondaryGroup $userName
-							fi
-						done
-						;;
-					*)
-						echo "ERROR: invalid command"
-						;;
-				esac
-				;;
-			shell) ########## FIXA SÅ ATT ALLA MÖJLIGA SHELLS LISTAS SÅ FÅR ANVÄNDAREN VÄLJA
-				echo -e "PICK A SHELLL!!!\n"
-				cat /etc/shells | grep ^/ | nl
-				echo ""
-				getInput
-				userShell=$(cat /etc/shells | grep ^/ | nl | grep $var | awk '{print $2}')
-				sudo usermod -s $userShell $userName
-				;;
-			*)
-				echo "ERROR: invalid command"
-		esac
+								if [ $secondaryGroup != "exit" ]; then
+									echo "group is: $secondaryGroup and name is: $userName"
+									sudo usermod -aG $secondaryGroup $userName
+								fi
+							done
+							;;
+						*)
+							echo "ERROR: invalid command"
+							;;
+					esac
+					;;
+				shell) ########## FIXA SÅ ATT ALLA MÖJLIGA SHELLS LISTAS SÅ FÅR ANVÄNDAREN VÄLJA
+					echo -e "PICK A SHELLL!!!\n"
+					cat /etc/shells | grep ^/ | nl
+					echo ""
+					getInput
+					userShell=$(cat /etc/shells | grep ^/ | nl | grep $var | awk '{print $2}')
+					sudo usermod -s $userShell $userName
+					;;
+				*)
+					echo "ERROR: invalid command"
+			esac
+		elif [ $numberMatches -gt 1 ]; then
+			echo "ERROR: to many matching options"
+			autoComplete $var "comment" "home" "password" "group" "shell" "exit"
+		else
+			echo "ERROR: No matching options"
+		fi
 	done
 }
 
@@ -232,29 +204,38 @@ userMenu() {
 	clear
 	echo -e "\n+ -- --=[ User Menu - Type help for more information]\n"
 	echo -e "[+] create\n[+] chpass\n[+] list\n[+] attributes\n[+] exit\n"
-	getInput
 	while [ $var != "exit" ]; do
-		case "$var" in
-			create)
-				createUser
-				;;
-			chpass)
-				passwdUser
-				;;
-			list)
-				listUser
-				;;
-			attributes)
-				attributes
-				;;
-			exit)
-				break
-				;;
-			*)
-				helpUser
-				;;
-		esac
 		getInput
+		numberMatches=$(autoComplete $var "create" "chpass" "list" "attributes" "exit" | wc -l)
+		if [ $numberMatches -eq 1 ]; then
+			var=$(autoComplete $var "create" "chpass" "list" "attributes" "exit")
+			case "$var" in
+				create)
+					createUser
+					;;
+				chpass)
+					passwdUser
+					;;
+				list)
+					listUser
+					;;
+				attributes)
+					attributes
+					;;
+				exit)
+					break
+					;;
+				*)
+					helpUser
+					;;
+			esac
+			getInput
+		elif [ $numberMatches -gt 1 ]; then
+			echo "ERROR: to many matching options"
+			autoComplete $var "create" "chpass" "list" "attributes" "exit"
+		else
+			echo "ERROR: No matching options"
+		fi
 	done
 	menu
 }
@@ -277,26 +258,34 @@ folderMenu() {
 	clear
 	echo -e "\n+ -- --=[ Folder Menu - Type help for more information]\n"
 	echo -e "[+] create\n[+] list\n[+] attributes\n[+] exit\n"
-	getInput
 	while [ $var != "exit" ]; do
-		case "$var" in
-			create)
-				createFolder
-				;;
-			list)
-				listContents	
-				;;
-			attributes)
-				listAttributes
-				;;
-			exit)
-				break
-				;;
-			*)
-				helpFolder
-				;;
-		esac
 		getInput
+		numberMatches=$(autoComplete $var "create" "list" "attributes" "exit" | wc -l)
+		if [ $numberMatches -eq 1 ]; then
+			var=$(autoComplete $var "create" "list" "attributes" "exit")
+			case "$var" in
+				create)
+					createFolder
+					;;
+				list)
+					listContents	
+					;;
+				attributes)
+					listAttributes
+					;;
+				exit)
+					break
+					;;
+				*)
+					helpFolder
+					;;
+			esac
+		elif [ $numberMatches -gt 2 ]; then
+			echo "ERROR: to many matching options"
+			autoComplete $var "install" "uninstall" "on" "off" "exit"
+		else
+			echo "ERROR: No matching options"
+		fi
 	done
 	menu
 }
@@ -319,29 +308,37 @@ serverMenu() {
 	clear
 	echo -e "\n+ -- --=[ Server Menu - Type help for more information]\n"
 	echo -e "[+] install\n[+] uninstall\n[+] on\n[+] off\n[+] exit\n"
-	getInput
 	while [ $var != "exit" ]; do
-		case "$var" in
-			install)
-				installSsh
-				;;
-			uninstall)
-				uninstallSsh
-				;;
-			on)
-				turnSshOn
-				;;
-			off)
-				turnSshOff
-				;;
-			exit)
-				break
-				;;
-			*)
-				helpServer
-				;;
-		esac
 		getInput
+		numberMatches=$(autoComplete $var "install" "uninstall" "on" "off" "exit" | wc -l)
+		if [ $numberMatches -eq 1 ]; then
+			var=$(autoComplete $var "install" "uninstall" "on" "off" "exit")
+			case "$var" in
+				install)
+					installSsh
+					;;
+				uninstall)
+					uninstallSsh
+					;;
+				on)
+					turnSshOn
+					;;
+				off)
+					turnSshOff
+					;;
+				exit)
+					break
+					;;
+				*)
+					helpServer
+					;;
+			esac
+		elif [ $numberMatches -gt 1 ]; then
+			echo "ERROR: to many matching options"
+			autoComplete $var "install" "uninstall" "on" "off" "exit"
+		else
+			echo "ERROR: No matching options"
+		fi
 	done
 	menu
 }
@@ -397,8 +394,9 @@ menu() {
 	echo -e "[+] group\n[+] user\n[+] folder\n[+] server\n[+] pretty\n[+] quit\n"
 	while true; do
 		getInput
-		if [ $(autoCompleteMain $var | wc -l) -eq 1 ]; then
-			var=$(autoCompleteMain $var)
+		numberMatches=$(autoComplete $var group user folder server pretty quit | wc -l)
+		if [ $numberMatches -eq 1 ]; then
+			var=$(autoComplete $var group user folder server pretty quit)
 			# FUNKTION HÄR - Tar emot input och försöker matcha mha grep till något av alternativen under
 			case $var in
 				group)
@@ -422,9 +420,9 @@ menu() {
 				*)
 					helpMenu
 			esac
-		elif [ $(autoCompleteMain $var | wc -l) -gt 1 ]; then
+		elif [ $numberMatches -gt 1 ]; then
 			echo "ERROR: To many matching options"
-			autoCompleteMain $var
+			autoComplete $var
 		else
 			echo "ERROR: No matching options"
 		fi
