@@ -1,8 +1,8 @@
 # TODO
 
 ---- ALLMÄNT ----
-* försök få endast 1 autocomplete funktion, kolla kommentar i koden för autoCompleteMain
 * Snygga färger för text output
+* Hjälp menyer för alla sub menus (efter help menu gå tillbaks till början av respektive meny dvs rensa historik och skriv ut menyn på nytt)
 
 ---- GROUPS ----
 * Skapa nya grupper 
@@ -12,10 +12,9 @@
 * Ta bort användare från en grupp
 
 ---- USERS ----
-* Skapa användare (snygga till funktionen + lite kanske lite fler parametrar)
-* Ändra lösenord för användare
-* Lista systemets användare
+* Lista systemets användare (tar inte emot första input, får skriva in 2ggr)
 * Visa och ändra samtliga attribut för en viss användare (allt i /etc/passwd)
+* exit ur list skriver inte ut huvudmenyn för user - fixa
 
 ---- FOLDERS ----
 * Skapa mappar
