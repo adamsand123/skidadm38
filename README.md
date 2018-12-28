@@ -12,9 +12,7 @@
 * Ta bort användare från en grupp
 
 ---- USERS ----
-* Lista systemets användare (tar inte emot första input, får skriva in 2ggr)
 * Visa och ändra samtliga attribut för en viss användare (allt i /etc/passwd)
-* exit ur list skriver inte ut huvudmenyn för user - fixa
 
 ---- FOLDERS ----
 * Skapa mappar

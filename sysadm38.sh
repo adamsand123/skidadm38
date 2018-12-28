@@ -1,5 +1,7 @@
 #!/bin/bash
+
 # ---------- GLOBALA VARIABLER ---------------
+
 ####### FÄRGER
 # ---- TEXT ----
 P='\033[49;95m'
@@ -392,7 +394,8 @@ banner() {
 	echo -e $P"│"$R"▒▀▀▀▄▄▒█▀▄▒▒▒█▒▒█▒▒█▒"$G"█▄▄█▒█▒▒█▒█▒█▒█▒▒█▒▒█▒█▒█▒"$Y"▒▒▒▀▄▒▄▀▀▄"$P"│"
 	echo -e $P"│"$R"▒█▄▄▄█▒█▒▒█▒▄█▄▒█▄▄▀▒"$G"█▒▒█▒█▄▄▀▒█▒▒▒█▒▄█▄▒█▒▒▀█▒"$Y"▒█▄▄█▒▀▄▄▀"$P"│"
 	echo -e $P"└─────────────────────────────────────────────────────────┘"
-	echo -e "$W"
+	echo -en "$W"
+	echo "          --=[ SKIDADMIN38 (version 0.1.dev.nodisco)]"
 }
 
 # ---------- allmäna funktioner --------------
@@ -538,30 +541,92 @@ passwduser() {
 	echo -n "username: "
 	read username
 	cat /etc/passwd | grep $username > /dev/null
-	if [ $? -eq 0 ]; then
-		sudo passwd $username
+	if [ $? -ne 0 ]; then
+		echo -e "\nERROR: User doesn't exist\n"
+		read -p "Press any key to continue"
 	else
-		echo "ERROR: User doesn't exist"
+		echo "NOT ERROR: USER DO EXIST"
+		sudo passwd $username
 	fi
 }
 
 listuser() {
 	cat /etc/passwd | awk -F ":" '{print $1}' | nl
+	echo ""
 	read -p "Press any key to continue"
 }
 
 attributes() {
 	echo -n "Enter user name: "
 	read username
-	#cat /etc/passwd | grep $username | awk -F ':' '{for(i=1;i<=NF;i++) print $i}'
-	echo "Username: $(cat /etc/passwd | grep $username | cut -d ":" -f 1)"
-	echo "Password: $(cat /etc/passwd | grep $username | cut -d ":" -f 2)"
-	echo "UID: $(cat /etc/passwd | grep $username | cut -d ":" -f 3)"
-	echo "GID: $(cat /etc/passwd | grep $username | cut -d ":" -f 4)"
-	echo "Comments: $(cat /etc/passwd | grep $username | cut -d ":" -f 5)" ### SKRIVA UT VAD VARJE COMMENT BETYDER?
-	echo "Home folder: $(cat /etc/passwd | grep $username | cut -d ":" -f 6)"
-	echo "Shell: $(cat /etc/passwd | grep $username | cut -d ":" -f 7)"
-	read -p "Press any key to continue"
+
+	var="notexit"
+	while [ $var != "exit" ]; do
+		echo -e "\nUsername: \t$(cat /etc/passwd | grep $username | cut -d ":" -f 1)"
+		echo -e "Password: \t$(cat /etc/passwd | grep $username | cut -d ":" -f 2)"
+		echo -e "UID: \t\t$(cat /etc/passwd | grep $username | cut -d ":" -f 3)"
+		echo -e "GID: \t\t$(cat /etc/passwd | grep $username | cut -d ":" -f 4)"
+		echo -e "Comments: \t$(cat /etc/passwd | grep $username | cut -d ":" -f 5)" ### SKRIVA UT VAD VARJE COMMENT BETYDER?
+		echo -e "Home folder: \t$(cat /etc/passwd | grep $username | cut -d ":" -f 6)"
+		echo -e "Shell: \t\t$(cat /etc/passwd | grep $username | cut -d ":" -f 7)\n"
+
+		echo -e "\n+ -- --=[ User Mod Menu - Type help for more information]\n"
+		echo -e "[+] name\n[+] password\n[+] UID\n[+] GID\n[+] comment\n[+] home\n[+] shell\n[+] exit\n"
+		getinput
+		numbermatches=$(autocomplete $var "name" "password" "UID" "GID" "comment" "home" "shell" "exit" | wc -l)
+		if [ $numbermatches -eq 1 ]; then
+			var=$(autocomplete $var "name" "password" "UID" "GID" "comment" "home" "shell" "exit")
+			case $var in
+				name)
+					echo "Please enter new name\n"
+					getinput
+					sudo usermod -l $var $username
+					username=$var
+					;;
+				password)
+					sudo passwd $username
+					;;
+				uid)
+					echo "Please enter new uid\n"
+					sudo getinput
+					usermod -u $var $username
+					;;
+				gid)
+					echo "Please enter new gid\n"
+					getinput
+					sudo usermod -g $var $username
+					;;
+				comment)
+					echo "Please enter a comment\n"
+					getinput
+					sudo usermod -c $var $username
+					;;
+				home)
+					echo "Please enter new home folder (absolute) path\n"
+					getinput
+					sudo usermod -d $var $username
+					;;
+				shell)
+					echo "Which shell would you like to use for $username?"
+					cat /etc/shells | grep ^/ | nl
+					read ans
+					shell=$(cat /etc/shells | grep ^/ | nl | grep $ans | awk '{print $2}')
+					sudo usermod -s $shell $username
+					;;
+				exit)
+					break
+					;;
+				*)
+					;;
+			esac
+		elif [ $numbermatches -gt 1 ]; then
+			echo "ERROR: to many matching options\n"
+			autocomplete $var "name" "password" "UID" "GID" "comment" "home" "shell" "exit"
+
+		else
+			echo "ERROR: No matching options"
+		fi
+	done
 }
 
 usermenu() {
@@ -760,7 +825,9 @@ helpserver() {
 
 # Skriver ut huvudmeny
 menu() {
-	echo -e "\n+ -- --=[ Main Menu - Type help for more information]\n"
+	clear
+	banner
+	echo -e "+ -- --=[ Main Menu - Type help for more information]\n"
 	echo -e "[+] group\n[+] user\n[+] folder\n[+] server\n[+] pretty\n[+] quit\n"
 	while true; do
 		getinput
@@ -801,10 +868,6 @@ menu() {
 
 # Main funktion - styr körning av program
 main() {
-	#mrcpc
-	#theovster
-	banner
-	printbanner
 	menu
 }
 
