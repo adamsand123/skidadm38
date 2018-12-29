@@ -13,8 +13,6 @@
 
 ---- USERS ----
 * Visa och ändra samtliga attribut för en viss användare (allt i /etc/passwd)
-* attributes meny
-	* gid fungerar inte att ändra
 
 ---- FOLDERS ----
 * Skapa mappar
