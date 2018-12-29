@@ -509,171 +509,199 @@ groupmenu() {
 
 # ----------- USER FUNKTIONER --------- 
 createuser() {
-	echo -n "Enter user name: "
-	read username
-	cat /etc/passwd | grep $username &>/dev/null
-	while [ $? -eq 0 ]; do
-		echo "ERROR: User $username already exsists"
-		echo -n "Enter user name: "
-		read username
-		cat /etc/passwd | grep $username &>/dev/null
-	done
-	username=$(echo $username | tr [A-Z] [a-z])
-	useradd -m $username
-	read -p "Press any key to continue"
+        echo -n "Enter user name: "
+        read username
+        username=$(echo $username | tr [A-Z] [a-z])
+
+        #cat /etc/passwd | cut -d: -f 1 | grep -w $username &>/dev/null
+        getent passwd $username > /dev/null
+        if [ $? -ne 0 ]; then
+                sudo useradd -m $username
+                if [ $? -eq 0 ]; then
+                        echo -ne "$G"
+                        echo -e "User: $username was created successfullyi$W"
+                fi
+        else
+                echo -ne "$R"
+                echo -e "ERROR creating user$W"
+        fi
+        read -p "Press any key to continue"
 }
 
 createuserez() {
-	echo -n "Enter user name: "
-	read username
-	cat /etc/passwd | grep $username &>/dev/null
-	while [ $? -eq 0 ]; do
-		echo "ERROR: User $username already exsists"
-		echo -n "Enter user name: "
-		read username
-		cat /etc/passwd | grep $username &>/dev/null
-	done
-	username=$(echo $username | tr [A-Z] [a-z])
-	sudo adduser $username
+        echo -n "Enter user name: "
+        read username
+        #cat /etc/passwd | grep $username &>/dev/null
+        getent passwd $username > /dev/null
+        while [ $? -eq 0 ]; do
+                echo -ne "$R"
+                echo "ERROR: User $username already exsists$W"
+                echo -n "Enter user name: "
+                read username
+                cat /etc/passwd | grep $username &>/dev/null
+        done
+        username=$(echo $username | tr [A-Z] [a-z])
+        sudo adduser $username
 }
 
 passwduser() {
-	echo -n "username: "
-	read username
-	cat /etc/passwd | grep $username > /dev/null
-	if [ $? -ne 0 ]; then
-		echo -e "\nERROR: User doesn't exist\n"
-		read -p "Press any key to continue"
-	else
-		echo "NOT ERROR: USER DO EXIST"
-		sudo passwd $username
-	fi
+        echo -n "username: "
+        read username
+        #cat /etc/passwd | grep $username > /dev/null
+        getent passwd $username > /dev/null
+        if [ $? -ne 0 ]; then
+                echo -ne "$R"
+                echo -e "ERROR: User doesn't exist$W\n"
+        else
+                sudo passwd $username > /dev/null
+        fi
+        echo ""
+        read -p "Press any key to continue"
 }
 
 listuser() {
-	cat /etc/passwd | awk -F ":" '{print $1}' | nl
-	echo ""
-	read -p "Press any key to continue"
+        cat /etc/passwd | awk -F ":" '{print $1}' | nl
+        echo ""
+        read -p "Press any key to continue"
+}
+
+showattributes() {
+        clear
+        echo "Showing attributes for user: $1"
+        echo -e "\nUsername: \t$(cat /etc/passwd | grep "^$1:" | cut -d: -f1)"
+        echo -e "Password: \t$(cat /etc/passwd | grep "^$1:" | cut -d ":" -f 2)"
+        echo -e "UID: \t\t$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 3)"
+        echo -e "GID: \t\t$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 4)"
+        echo -e "Comments: \t$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 5)"
+        echo -e "Home folder: \t$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 6)"
+        echo -e "Shell: \t\t$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 7)\n"
 }
 
 attributes() {
-	echo -n "Enter user name: "
-	read username
+        echo -n "Enter user name: "
+        read username
 
-	var="notexit"
-	while [ $var != "exit" ]; do
-		echo -e "\nUsername: \t$(cat /etc/passwd | grep $username | cut -d ":" -f 1)"
-		echo -e "Password: \t$(cat /etc/passwd | grep $username | cut -d ":" -f 2)"
-		echo -e "UID: \t\t$(cat /etc/passwd | grep $username | cut -d ":" -f 3)"
-		echo -e "GID: \t\t$(cat /etc/passwd | grep $username | cut -d ":" -f 4)"
-		echo -e "Comments: \t$(cat /etc/passwd | grep $username | cut -d ":" -f 5)" ### SKRIVA UT VAD VARJE COMMENT BETYDER?
-		echo -e "Home folder: \t$(cat /etc/passwd | grep $username | cut -d ":" -f 6)"
-		echo -e "Shell: \t\t$(cat /etc/passwd | grep $username | cut -d ":" -f 7)\n"
+        #cat /etc/passwd | grep ^$username >> /dev/null
+        getent passwd $username > /dev/null
+        if [ $? -eq 0 ]; then
+                var="notexit"
+                while [ $var != "exit" ]; do
+                        showattributes $username
 
-		echo -e "\n+ -- --=[ User Mod Menu - Type help for more information]\n"
-		echo -e "[+] name\n[+] password\n[+] UID\n[+] GID\n[+] comment\n[+] home\n[+] shell\n[+] exit\n"
-		getinput
-		numbermatches=$(autocomplete $var "name" "password" "UID" "GID" "comment" "home" "shell" "exit" | wc -l)
-		if [ $numbermatches -eq 1 ]; then
-			var=$(autocomplete $var "name" "password" "UID" "GID" "comment" "home" "shell" "exit")
-			case $var in
-				name)
-					echo "Please enter new name\n"
-					getinput
-					sudo usermod -l $var $username
-					username=$var
-					;;
-				password)
-					sudo passwd $username
-					;;
-				uid)
-					echo "Please enter new uid\n"
-					sudo getinput
-					usermod -u $var $username
-					;;
-				gid)
-					echo "Please enter new gid\n"
-					getinput
-					sudo usermod -g $var $username
-					;;
-				comment)
-					echo "Please enter a comment\n"
-					getinput
-					sudo usermod -c $var $username
-					;;
-				home)
-					echo "Please enter new home folder (absolute) path\n"
-					getinput
-					sudo usermod -d $var $username
-					;;
-				shell)
-					echo "Which shell would you like to use for $username?"
-					cat /etc/shells | grep ^/ | nl
-					read ans
-					shell=$(cat /etc/shells | grep ^/ | nl | grep $ans | awk '{print $2}')
-					sudo usermod -s $shell $username
-					;;
-				exit)
-					break
-					;;
-				*)
-					;;
-			esac
-		elif [ $numbermatches -gt 1 ]; then
-			echo "ERROR: to many matching options\n"
-			autocomplete $var "name" "password" "UID" "GID" "comment" "home" "shell" "exit"
+                        echo -e "\n-=[ Attribute Modify Menu]\n"
+                        echo -e "[+] name\n[+] password\n[+] uid\n[+] gid\n[+] comment\n[+] home\n[+] shell\n[+] exit\n"
 
-		else
-			echo "ERROR: No matching options"
-		fi
-	done
+                        getinput
+                        numbermatches=$(autocomplete $var "name" "password" "uid" "gid" "comment" "home" "shell" "exit" | wc -l)
+                        if [ $numbermatches -eq 1 ]; then
+                                var=$(autocomplete $var "name" "password" "uid" "gid" "comment" "home" "shell" "exit")
+                                case $var in
+                                        name)
+                                                echo -n "Please enter new name: "
+                                                read newname
+                                                sudo usermod -l $newname $username
+                                                username=$newname
+                                                ;;
+                                        password)
+                                                sudo passwd $username
+                                                ;;
+                                        uid) ###################### FUNGERAR INTE ALLT BLIR RÖTT OCH GÅR INTE IN HÄR
+                                                echo -n "Please enter new uid: "
+                                                read newuid
+                                                sudo usermod -u $newuid $username
+                                                ;;
+                                        gid)
+                                                echo -n "Please enter new gid: "
+                                                read newgid
+                                                sudo usermod -g $newgid $username
+                                                ;;
+                                        comment)
+                                                echo -n "Please enter a comment: "
+                                                read newcomment
+                                                sudo usermod -c "$newcomment" $username
+                                                ;;
+                                        home)
+                                                echo -n "Please enter a new home folder (absolute path)"
+                                                read homepath
+                                                sudo usermod -d $homepath $username
+                                                ;;
+                                        shell)
+                                                echo -n "Which shell would you like to use for $username?\n"
+                                                sudo cat /etc/shells | grep ^/ | nl
+                                                read ans
+                                                shell=$(cat /etc/shells | grep ^/ | nl | grep $ans | awk '{print $2}')
+                                                sudo usermod -s $shell $username
+                                                ;;
+                                        exit)
+                                                break
+                                                ;;
+                                        *)
+                                                ;;
+                                esac
+                        elif [ $numbermatches -gt 1 ]; then
+                                echo -ne "$R"
+                                echo "ERROR: to many matching options$W\n"
+                                autocomplete $var "name" "password" "UID" "GID" "comment" "home" "shell" "exit"
+
+                        else
+                                echo -ne "$R"
+                                echo "ERROR: No matching options$W"
+                        fi
+                done
+        else
+                echo -ne "$R"
+                echo -e "ERROR: User $username doesn't exist!$W\n"
+                read -p "Press any key to continue ..."
+        fi
 }
 
 usermenu() {
-	echo ""
-	clear
-	echo -e "\n+ -- --=[ User Menu - Type help for more information]\n"
-	echo -e "[+] create\n[+] password\n[+] list\n[+] attributes\n[+] exit\n"
-	var="notexit"
-	while [ $var != "exit" ]; do
-		getinput
-		numbermatches=$(autocomplete $var "create" "password" "list" "attributes" "exit" | wc -l)
-		if [ $numbermatches -eq 1 ]; then
-			var=$(autocomplete $var "create" "password" "list" "attributes" "exit")
-			case "$var" in
-				"create")
-					#createuser
-					createuserez
-					usermenu
-					;;
-				"password")
-					passwduser
-					usermenu
-					;;
-				"list")
-					listuser
-					usermenu
-					;;
-				"attributes")
-					attributes
-					usermenu
-					;;
-				"exit")
-					break
-					;;
-				*)
-					helpuser
-					usermenu
-					;;
-			esac
-		elif [ $numbermatches -gt 1 ]; then
-			echo "ERROR: to many matching options"
-			autocomplete $var "create" "password" "list" "attributes" "exit"
-		else
-			echo "ERROR: No matching options"
-		fi
-	done
-	menu
+        echo ""
+        clear
+        echo -e "\n+ -- --=[ User Menu - Type help for more information]\n"
+        echo -e "[+] create\n[+] password\n[+] list\n[+] attributes\n[+] exit\n"
+        var="notexit"
+        while [ $var != "exit" ]; do
+                getinput
+                numbermatches=$(autocomplete $var "create" "password" "list" "attributes" "exit" | wc -l)
+                if [ $numbermatches -eq 1 ]; then
+                        var=$(autocomplete $var "create" "password" "list" "attributes" "exit")
+                        case "$var" in
+                                "create")
+                                        createuser
+                                        #createuserez
+                                        usermenu
+                                        ;;
+                                "password")
+                                        passwduser
+                                        usermenu
+                                        ;;
+                                "list")
+                                        listuser
+                                        usermenu
+                                        ;;
+                                "attributes")
+                                        attributes
+                                        usermenu
+                                        ;;
+                                "exit")
+                                        break
+                                        ;;
+                                *)
+                                        helpuser
+                                        usermenu
+                                        ;;
+                        esac
+                elif [ $numbermatches -gt 1 ]; then
+                        echo -ne "$R"
+                        echo -e "ERROR: to many matching options$W"
+                        autocomplete $var "create" "password" "list" "attributes" "exit"
+                else
+                        echo -ne "$R"
+                        echo -e "ERROR: No matching options$W"
+                fi
+        done
+        menu
 }
 
 # ------------- FOLDER -------------
