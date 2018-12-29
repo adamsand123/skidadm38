@@ -604,16 +604,19 @@ attributes() {
                                                 ;;
                                         password)
                                                 sudo passwd $username
+						read -p "Press anything to continue: "
                                                 ;;
-                                        uid) ###################### FUNGERAR INTE ALLT BLIR RÖTT OCH GÅR INTE IN HÄR
+                                        uid)
                                                 echo -n "Please enter new uid: "
                                                 read newuid
                                                 sudo usermod -u $newuid $username
+						read -p "Press anything to continue: "
                                                 ;;
                                         gid)
                                                 echo -n "Please enter new gid: "
                                                 read newgid
                                                 sudo usermod -g $newgid $username
+						read -p "Press anything to continue: "
                                                 ;;
                                         comment)
                                                 echo -n "Please enter a comment: "
@@ -621,16 +624,24 @@ attributes() {
                                                 sudo usermod -c "$newcomment" $username
                                                 ;;
                                         home)
-                                                echo -n "Please enter a new home folder (absolute path)"
-                                                read homepath
-                                                sudo usermod -d $homepath $username
+                                                echo -n "Please enter a new home folder (absolute path): "
+						read homepath
+						echo /home/scuffed | grep ^/home/ > /dev/null
+						if [ $? -eq 0 ]; then
+							sudo usermod -m -d $homepath $username
+						else
+							echo -e ""$W"["$R"-"$W"] "$R"Error wrong path"$W""
+						fi
+						read -p "Press anything to continue: "
                                                 ;;
                                         shell)
-                                                echo -n "Which shell would you like to use for $username?\n"
+                                                echo "Which shell would you like to use for $username?"
                                                 sudo cat /etc/shells | grep ^/ | nl
-                                                read ans
-                                                shell=$(cat /etc/shells | grep ^/ | nl | grep $ans | awk '{print $2}')
+						echo -e -n "$B""["$R"Input"$B"]: "$W""
+                                                read var
+                                                shell=$(cat /etc/shells | grep ^/ | nl | grep $var | awk '{print $2}')
                                                 sudo usermod -s $shell $username
+						read -p "Press anything to continue: "
                                                 ;;
                                         exit)
                                                 break
