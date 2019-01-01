@@ -449,7 +449,19 @@ listgroups() {
 }
 
 listgroupmembers() {
-	echo "listing the groups members"
+	gid=$1
+	getent group $gid &>/dev/null
+	if [ $? -eq 0 ]; then
+		for user in $(cut -d: -f1 /etc/passwd); do
+			id $user | cut -d ' ' -f 2,3 | grep -w "$gid" &>/dev/null
+			if [ $? -eq 0 ]; then
+				echo $user
+			fi
+		done
+	else
+		echo "ERROR: The group doesn't exist!"
+	fi
+
 }
 
 addusertogroup() {
