@@ -493,7 +493,9 @@ groupmenu() {
 					listgroups
 					;;
 				members)
-					listgroupmembers
+					echo -n "group: "
+					read gid
+					listgroupmembers $gid
 					;;
 				add)
 					addusertogroup
@@ -903,7 +905,8 @@ menu() {
 					makepretty	
 					;;
 				quit)
-					exit 0 #exit 0 för att indikera att körnigen av skriptet gick bra (användaren valde själv att avsluta)
+					#exit 0 #exit 0 för att indikera att körnigen av skriptet gick bra (användaren valde själv att avsluta)
+					return 0
 					;;
 				*)
 					helpmenu
