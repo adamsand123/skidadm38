@@ -2,17 +2,15 @@
 
 ---- ALLMÄNT ----
 * Snygga färger för text output
-* Hjälp menyer för alla sub menus (efter help menu gå tillbaks till början av respektive meny dvs rensa historik och skriv ut menyn på nytt)
 
 ---- GROUPS ----
-* Skapa nya grupper 
-* Lista systemets alla grupper 
-* Lista alla användare i en specifierad grupp
+* Skapa nya grupper
+* Lista systemets alla grupper
 * Lägg till användare till en grupp
 * Ta bort användare från en grupp
 
 ---- USERS ----
-* Visa och ändra samtliga attribut för en viss användare (allt i /etc/passwd)
+* Gör snyggare? annars klara
 
 ---- FOLDERS ----
 * Skapa mappar
