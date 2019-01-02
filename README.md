@@ -4,9 +4,7 @@
 * Snygga färger för text output
 
 ---- FOLDERS ----
-* Skapa mappar
-* Lista innehåll specifik mapp
-* Lista och ändra attribut för mappar
+* ändra attribut för mappar
 	* Ägare
 	* Rättigheter
 	* sticky bit
