@@ -3,15 +3,6 @@
 ---- ALLMÄNT ----
 * Snygga färger för text output
 
----- GROUPS ----
-* Skapa nya grupper
-* Lista systemets alla grupper
-* Lägg till användare till en grupp
-* Ta bort användare från en grupp
-
----- USERS ----
-* Gör snyggare? annars klara
-
 ---- FOLDERS ----
 * Skapa mappar
 * Lista innehåll specifik mapp

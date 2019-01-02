@@ -442,16 +442,32 @@ autocomplete() {
 
 creategroup() {
 	echo "creating group"
+	echo -n "group name: "
+	read grpname
+	echo -n "gid(optional): "
+	read gid
+	if [ -z $gid ]; then
+		sudo groupadd $grpname
+	else
+		sudo groupadd $grpname -g $gid
+	fi
+	read -p "Press any key to continue: "
 }
 
 listgroups() {
-	echo "listing groups"
+	echo -e "Listing groups\n"
+	cat /etc/group | cut -d: -f1 | column
+	echo ""
+	read -p "Press any key to continue: "
 }
 
 listgroupmembers() {
-	gid=$1
+	echo -n "group: "
+	read gid
+
 	getent group $gid &>/dev/null
 	if [ $? -eq 0 ]; then
+		echo -e "The members of the group: "
 		for user in $(cut -d: -f1 /etc/passwd); do
 			id $user | cut -d ' ' -f 2,3 | grep -w "$gid" &>/dev/null
 			if [ $? -eq 0 ]; then
@@ -459,25 +475,42 @@ listgroupmembers() {
 			fi
 		done
 	else
-		echo "ERROR: The group doesn't exist!"
+		echo -e "ERROR: The group doesn't exist!\n"
 	fi
-
+	echo ""
+	read -p "Press any key to continue: "
 }
 
 addusertogroup() {
-	echo "adding user to group"
+	echo -n "what group would you like to add a user to: "
+	read group
+
+	echo -n "what user: "
+	read user
+
+	sudo usermod -aG $group $user
+
+	read -p "Press any key to continue: "
 }
 
 removeuserfromgroup() {
-	echo "removing user from group"
+	echo -n "what group would you like to remove a user from: "
+	read groupname
+
+	echo -n "what user: "
+	read username 
+	sudo deluser $username $groupname
+
+	read -p "Press any key to continue: "
 }
 
 groupmenu() {
-	clear
-	echo -e "\n+ -- --=[ Group Menu - Type help for more information]\n"
-	echo -e "[+] create\n[+] list\n[+] members\n[+] add\n[+] remove\n[+] exit\n"
-	getinput
+	var="notexit"
 	while [ $var != "exit" ]; do
+		clear
+		echo -e "\n+ -- --=[ Group Menu - Type help for more information]\n"
+		echo -e "[+] create\n[+] list\n[+] members\n[+] add\n[+] remove\n[+] exit\n"
+		getinput
 		# Kalla på funktion här som ändrar värdet av $val till matchande kommando mha grep (t.ex mem -> members)
 		# Om det finns fler än 1 alternativ skriv ut de alternativ som matchar
 		# Om det inte finns någon matchning skriv ut error och help menu för groups
@@ -493,9 +526,7 @@ groupmenu() {
 					listgroups
 					;;
 				members)
-					echo -n "group: "
-					read gid
-					listgroupmembers $gid
+					listgroupmembers
 					;;
 				add)
 					addusertogroup
@@ -508,9 +539,10 @@ groupmenu() {
 					;;
 				*)
 					helpgroup
+					groupmenu
 					;;
 			esac
-			getinput
+			#getinput
 		elif [ $numbermatches -gt 1 ]; then
 			echo "ERROR: to many matching options"
 			autocomplete $var "create" "list" "members" "add" "remove" "exit"
@@ -731,15 +763,41 @@ usermenu() {
 
 # ------------- FOLDER -------------
 createfolder() {
-	echo ""
+	echo -n "Please enter a path and name (default path is: '$(echo $HOME)'): "
+	read foldername
+	if [ -z $(echo $foldername | grep ^/) ]; then # OM INTE abs path angavs
+		sudo mkdir ~/$foldername
+	else # OM abs path angavs
+		sudo mkdir $foldername
+	fi
 }
 
 listcontents() {
-	echo ""
+	echo -n "Please enter a path and name (default path is: '$(echo $HOME)'): "
+	read foldername
+	if [ -z $(echo $foldername | grep ^/) ]; then # OM INTE abs path angavs
+		ls -l ~/$foldername
+	else # OM abs path angavs
+		ls -l $foldername
+	fi
 }
 
 listattributes() {
-	echo ""
+	echo -n "name of directory: "
+	read directory
+	path=$(find / -type d -name $directory 2>/dev/null)
+	if [ $(echo $path | tr [:blank:] '\n' | wc -l) -ne 1 ]; then
+		echo "There where several paths:"
+		echo $path | tr [:blank:] '\n' | nl
+		echo -n "Which path do you want: "
+		read svar
+
+		stat $(find /home -type d -name jocke | nl | egrep "^\s+[$svar]+" | awk '{print $2}')
+	else
+		echo "The path to $directory is:"
+		echo $path
+		showattr $path 1 
+	fi
 }
 
 foldermenu() {
