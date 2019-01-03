@@ -827,11 +827,29 @@ chfolder() {
 }
 
 chfoldersticky() {
-echo""
+	echo -e "[1] enable"
+	echo -e "[2] disable"
+	getinput
+	if [ $var -eq 1 ]; then
+		sudo chmod o+t $1
+	elif [ $var -eq 2 ]; then
+		sudo chmod o-t $1
+	else
+		echo "ERROR: Invalid option"
+	fi
 }
 
 chfolderguid() {
-echo""
+	echo -e "[1] enable"
+	echo -e "[2] disable"
+	getinput
+	if [ $var -eq 1 ]; then
+		sudo chmod g+r $1
+	elif [ $var -eq 2 ]; then
+		sudo chmod g-r $1
+	else
+		echo "ERROR: Invalid option"
+	fi
 }
 
 chfoldermod() {
@@ -1160,7 +1178,7 @@ installssh() {
 uninstallssh() {
 	echo "Uninstalling OPENSSH server"
 	sudo systemctl stop ssh
-	sudo apt remove --purge openssh-server
+	sudo apt remove --purge openssh-server -y
 	read -p "Press enter to continue..."
 }
 turnsshon() {
@@ -1177,9 +1195,9 @@ servermenu() {
 	while [ $var != "exit" ]; do
 		clear
 		echo -e "\n"$B"+ -- --=[ Server Menu - Type help for more information]\n"$W""
-		which openssh-server &> /dev/null
+		sudo apt list --installed 2>/dev/null | grep openssh-server 
 		if [ $? -eq 0 ]; then
-			echo -e "Status: $(sudo systemctl status ssh)"
+			echo -e "Status: $(sudo systemctl status ssh)\n"
 		fi
 		echo -e ""$G"[+]"$W" install\n"$G"[+]"$W" uninstall\n"$G"[+]"$W" on\n"$G"[+]"$W" off\n"$G"[+]"$W" exit\n"
 		getinput
