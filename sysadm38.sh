@@ -856,7 +856,7 @@ chfolderowner() {
 	ls -ld $path | awk '{print $3}'
 }
 chfoldergroup() {
-
+	echo "test"
 }
 
 chpermfolder() {
@@ -1163,20 +1163,34 @@ foldermenu() {
 # ------------- SERVER -------------
 installssh() {
 	echo "Installing OPENSSH server"
+	sudo apt install -y openssh-server
+	sudo systemctl disable ssh.service
+	read -p "Press enter to continue..."
 }
 uninstallssh() {
 	echo "Uninstalling OPENSSH server"
+	sudo systemctl stop ssh
+	sudo apt remove --purge openssh-server
+	read -p "Press enter to continue..."
 }
 turnsshon() {
 	echo "Turning SSH access on"
+	sudo systemctl start ssh.service
+	read -p "Press enter to continue..."
 }
 turnsshoff() {
 	echo "Turning SSH access off"
+	sudo systemctl stop ssh.service
+	read -p "Press enter to continue..."
 }
 servermenu() {
 	while [ $var != "exit" ]; do
 		clear
 		echo -e "\n+ -- --=[ Server Menu - Type help for more information]\n"
+		which openssh-server &> /dev/null
+		if [ $? -eq 0 ]; then
+			echo -e "Status: $(sudo systemctl status ssh)"
+		fi
 		echo -e "[+] install\n[+] uninstall\n[+] on\n[+] off\n[+] exit\n"
 		getinput
 		numbermatches=$(autocomplete $var "install" "uninstall" "on" "off" "exit" | wc -l)
