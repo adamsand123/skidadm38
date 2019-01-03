@@ -789,11 +789,9 @@ folderattributes() {
 			echo -n -e "\tis not set"
 		fi
 		echo ""
-		#chfolder
 	else
 		echo "ERROR: Folder doesn't exist!"
 	fi
-	#read -p "press enter to continue"
 }
 
 chfolder() {
@@ -805,26 +803,28 @@ chfolder() {
 			folderattributes
 			echo -e "\n-=[ Folder Attribute Modification Menu]\n"
 			echo -e "[+] permissions\n[+] owner\n[+] group\n[+] sticky-bit\n[+] setguid\n[+] modified\n[+] exit\n"
-
 			getinput
 			numbermatches=$(autocomplete $var "permissions" "owner" "group" "sticky-bit" "setguid" "modified" "exit" | wc -l)
 			if [ $numbermatches -eq 1 ]; then
 				var=$(autocomplete $var  "permissions" "owner" "group" "sticky-bit" "setguid" "modified" "exit")
 				case $var in
 					permissions)
-						chpermfolder
+						chpermfolder $path
 						;;
 					owner)
-						chfolderowner
+						chfolderowner $path
 						;;
 					group)
-						chfoldergroup
+						chfoldergroup $path
 						;;
 					sticky-bit)
+						chfoldersticky $path
 						;;
 					setguid)
+						chfolderguid $path
 						;;
 					modified)
+						chfoldermod $path
 						;;
 					exit)
 						return 0
@@ -849,35 +849,51 @@ chfolder() {
 	fi
 }
 
+chfoldersticky() {
+
+}
+
+chfolderguid() {
+
+}
+
+chfoldermod() {
+
+}
+
 chfolderowner() {
-	echo "new owner: "
+	echo -n "new owner: "
 	read newowner
-	sudo chown $newowner $path
+	sudo chown $newowner $1
 	ls -ld $path | awk '{print $3}'
+	read -p "enter ffs"
 }
 chfoldergroup() {
-
+	echo -n "new group: "
+	read newgroup
+	sudo chown :$newgroup $1
+	ls -ld $path | awk '{print $4}'
+	read -p "enter ffs"
 }
 
 chpermfolder() {
 	clear
 	echo -e "\n-=[ Folder Attribute Modification Menu]"
-	echo -e "-=[ Permissions: $(ls -ld $path | awk '{print $1}')]\n"
+	echo -e "-=[ Permissions: $(ls -ld $1 | awk '{print $1}')]\n"
 	echo -e "[+] owner\n[+] group\n[+] other\n[+] exit\n"
-
 	getinput
 	numbermatches=$(autocomplete $var "owner" "group" "other" "exit" | wc -l)
 	if [ $numbermatches -eq 1 ]; then
 		var=$(autocomplete $var "owner" "group" "other" "exit")
 		case $var in
 			owner)
-				folderowner
+				folderowner $1
 				;;
 			group)
-				foldergroup
+				foldergroup $1
 				;;
 			other)
-				folderother
+				folderother $1
 				;;
 			exit)
 				return 0
@@ -899,7 +915,6 @@ chpermfolder() {
 folderowner() {
 	echo -e "\n-=[ Folder Owner Permission Modification Menu]\n"
 	echo -e "[+] read\n[+] write\n[+] execute\n[+] all\n[+] exit\n"
-
 	getinput
 	numbermatches=$(autocomplete $var "read" "write" "execute" "all" "exit" | wc -l)
 	if [ $numbermatches -eq 1 ]; then
@@ -910,9 +925,9 @@ folderowner() {
 				echo -e "[2] disable"
 				getinput
 				if [ $var -eq 1 ]; then
-					sudo chmod u+r $path
+					sudo chmod u+r $1
 				elif [ $var -eq 2 ]; then
-					sudo chmod u-r $path
+					sudo chmod u-r $1
 				else
 					echo "ERROR: Invalid option"
 				fi
@@ -922,9 +937,9 @@ folderowner() {
 				echo -e "[2] disable"
 				getinput
 				if [ $var -eq 1 ]; then
-					sudo chmod u+w $path
+					sudo chmod u+w $1
 				elif [ $var -eq 2 ]; then
-					sudo chmod u-w $path
+					sudo chmod u-w $1
 				else
 					echo "ERROR: Invalid option"
 				fi
@@ -934,9 +949,9 @@ folderowner() {
 				echo -e "[2] disable"
 				getinput
 				if [ $var -eq 1 ]; then
-					sudo chmod u+x $path
+					sudo chmod u+x $1
 				elif [ $var -eq 2 ]; then
-					sudo chmod u-x $path
+					sudo chmod u-x $1
 				else
 					echo "ERROR: Invalid option"
 				fi
@@ -946,9 +961,9 @@ folderowner() {
 				echo -e "[2] disable"
 				getinput
 				if [ $var -eq 1 ]; then
-					sudo chmod u+rwx $path
+					sudo chmod u+rwx $1
 				elif [ $var -eq 2 ]; then
-					sudo chmod u-rwx $path
+					sudo chmod u-rwx $1
 				else
 					echo "ERROR: Invalid option"
 				fi
@@ -968,7 +983,7 @@ folderowner() {
 		echo -ne "$R"
 		echo -e "ERROR: No matching options"$W""
 	fi
-	echo "New permissions: $(ls -ld $path | awk '{print $1}')"
+	echo "New permissions: $(ls -ld $1 | awk '{print $1}')"
 	read -p "Press enter to continue ..."
 }
 
@@ -985,9 +1000,9 @@ foldergroup() {
 				echo -e "[2] disable"
 				getinput
 				if [ $var -eq 1 ]; then
-					sudo chmod g+r $path
+					sudo chmod g+r $1
 				elif [ $var -eq 2 ]; then
-					sudo chmod g-r $path
+					sudo chmod g-r $1
 				else
 					echo "ERROR: Invalid option"
 				fi
@@ -997,9 +1012,9 @@ foldergroup() {
 				echo -e "[2] disable"
 				getinput
 				if [ $var -eq 1 ]; then
-					sudo chmod g+w $path
+					sudo chmod g+w $1
 				elif [ $var -eq 2 ]; then
-					sudo chmod g-w $path
+					sudo chmod g-w $1
 				else
 					echo "ERROR: Invalid option"
 				fi
@@ -1009,9 +1024,9 @@ foldergroup() {
 				echo -e "[2] disable"
 				getinput
 				if [ $var -eq 1 ]; then
-					sudo chmod g+x $path
+					sudo chmod g+x $1
 				elif [ $var -eq 2 ]; then
-					sudo chmod g-x $path
+					sudo chmod g-x $1
 				else
 					echo "ERROR: Invalid option"
 				fi
@@ -1021,9 +1036,9 @@ foldergroup() {
 				echo -e "[2] disable"
 				getinput
 				if [ $var -eq 1 ]; then
-					sudo chmod g+rwx $path
+					sudo chmod g+rwx $1
 				elif [ $var -eq 2 ]; then
-					sudo chmod g-rwx $path
+					sudo chmod g-rwx $1
 				else
 					echo "ERROR: Invalid option"
 				fi
@@ -1043,7 +1058,7 @@ foldergroup() {
 		echo -ne "$R"
 		echo -e "ERROR: No matching options"$W""
 	fi
-	echo "New permissions: $(ls -ld $path | awk '{print $1}')"
+	echo "New permissions: $(ls -ld $1 | awk '{print $1}')"
 	read -p "Press enter to continue ..."
 }
 
@@ -1062,9 +1077,9 @@ folderother() {
 				echo -e "[2] disable"
 				getinput
 				if [ $var -eq 1 ]; then
-					sudo chmod o+r $path
+					sudo chmod o+r $1
 				elif [ $var -eq 2 ]; then
-					sudo chmod o-r $path
+					sudo chmod o-r $1
 				else
 					echo "ERROR: Invalid option"
 				fi
@@ -1074,9 +1089,9 @@ folderother() {
 				echo -e "[2] disable"
 				getinput
 				if [ $var -eq 1 ]; then
-					sudo chmod o+w $path
+					sudo chmod o+w $1
 				elif [ $var -eq 2 ]; then
-					sudo chmod o-w $path
+					sudo chmod o-w $1
 				else
 					echo "ERROR: Invalid option"
 				fi
@@ -1086,9 +1101,9 @@ folderother() {
 				echo -e "[2] disable"
 				getinput
 				if [ $var -eq 1 ]; then
-					sudo chmod o+x $path
+					sudo chmod o+x $1
 				elif [ $var -eq 2 ]; then
-					sudo chmod o-x $path
+					sudo chmod o-x $1
 				else
 					echo "ERROR: Invalid option"
 				fi
@@ -1098,9 +1113,9 @@ folderother() {
 				echo -e "[2] disable"
 				getinput
 				if [ $var -eq 1 ]; then
-					sudo chmod o+rwx $path
+					sudo chmod o+rwx $1
 				elif [ $var -eq 2 ]; then
-					sudo chmod o-rwx $path
+					sudo chmod o-rwx $1
 				else
 					echo "ERROR: Invalid option"
 				fi
@@ -1156,7 +1171,7 @@ foldermenu() {
 			helpfolder
 		fi
 	done
-	echo "New permissions: $(ls -ld $path | awk '{print $1}')"
+	echo "New permissions: $(ls -ld $1 | awk '{print $1}')"
 	read -p "Press enter to continue ..."
 }
 
