@@ -428,14 +428,14 @@ creategroup() {
 	else
 		sudo groupadd $grpname -g $gid
 	fi
-	read -p "Press any key to continue: "
+	read -p "Press enter to continue ..."
 }
 
 listgroups() {
 	echo -e "Listing groups\n"
 	cat /etc/group | cut -d: -f1 | column
 	echo ""
-	read -p "Press any key to continue: "
+	read -p "Press enter to continue ..."
 }
 
 listgroupmembers() {
@@ -455,7 +455,7 @@ listgroupmembers() {
 		echo -e "ERROR: The group doesn't exist!\n"
 	fi
 	echo ""
-	read -p "Press any key to continue: "
+	read -p "Press enter to continue ..."
 }
 
 addusertogroup() {
@@ -467,7 +467,7 @@ addusertogroup() {
 
 	sudo usermod -aG $group $user
 
-	read -p "Press any key to continue: "
+	read -p "Press enter to continue ..."
 }
 
 removeuserfromgroup() {
@@ -478,7 +478,7 @@ removeuserfromgroup() {
 	read username 
 	sudo deluser $username $groupname
 
-	read -p "Press any key to continue: "
+	read -p "Press enter to continue ..."
 }
 
 groupmenu() {
