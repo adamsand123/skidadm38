@@ -850,15 +850,15 @@ chfolder() {
 }
 
 chfoldersticky() {
-
+echo""
 }
 
 chfolderguid() {
-
+echo""
 }
 
 chfoldermod() {
-
+echo""
 }
 
 chfolderowner() {
