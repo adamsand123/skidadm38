@@ -513,8 +513,6 @@ groupmenu() {
 		# Kalla på funktion här som ändrar värdet av $val till matchande kommando mha grep (t.ex mem -> members)
 		# Om det finns fler än 1 alternativ skriv ut de alternativ som matchar
 		# Om det inte finns någon matchning skriv ut error och help menu för groups
-		numbermatches=0
-		echo $numbermatches
 		numbermatches=$(autocomplete $var "create" "list" "members" "add" "remove" "exit" | wc -l)
 		if [ $numbermatches -eq 1 ]; then
 			var=$(autocomplete $var "create" "list" "members" "add" "remove" "exit")
@@ -613,11 +611,12 @@ attributes() {
 	#cat /etc/passwd | grep ^$username >> /dev/null
 	getent passwd $username > /dev/null
 	if [ $? -eq 0 ]; then
-		var="notexit"
-		while [ $var != "exit" ]; do
+		#var="notexit"
+		while true; do
+			#while [ $var != "exit" ]; do
 			showattributes $username
 
-			echo -e "\n-=[ Attribute Modify Menu]\n"
+			echo -e "\n-=[ Attribute Modification Menu]\n"
 			echo -e "[+] name\n[+] password\n[+] uid\n[+] gid\n[+] comment\n[+] home\n[+] shell\n[+] exit\n"
 
 			getinput
@@ -673,7 +672,8 @@ attributes() {
 						read -p "Press anything to continue: "
 						;;
 					exit)
-						break
+						#break
+						return 0
 						;;
 					*)
 						;;
@@ -760,7 +760,19 @@ listcontents() {
 	read -p "Press enter to continue ..."
 }
 
-#######################
+
+
+
+
+
+
+
+####################### KAN TA BORT HELA SKITEN????? #####################################
+####################### KAN TA BORT HELA SKITEN????? #####################################
+####################### KAN TA BORT HELA SKITEN????? #####################################
+####################### KAN TA BORT HELA SKITEN????? #####################################
+####################### KAN TA BORT HELA SKITEN????? #####################################
+####################### KAN TA BORT HELA SKITEN????? #####################################
 listattributes() {
 	echo -n "name of directory: "
 	read directory
@@ -776,28 +788,29 @@ listattributes() {
 		echo $path
 		ls -ld $(find /home -type d -name jocke | nl | egrep "^\s+[$svar]+" | awk '{print $2}')
 
-	elif[ $(echo $path | tr [:blank:] '\n' | wc -l) -gt 1 ];
+	elif[ $(echo $path | tr [:blank:] '\n' | wc -w) -eq 0 ]; 
 		echo "ERROR: No results found"
 	else
-		ls -ld $path
-
 		clear
 		echo -e "Attributes\tValues"
 		echo -e "----------\t------"
-		echo -e -n "\nPriviligies:\t$(ls -ld $path | awk '{print $1}')"
-		echo -e -n "\nLinks:\t\t$(ls -ld $path | awk '{print $2}')"
-		echo -e -n "\nOwner(user):\t$(ls -ld $path | awk '{print $3}')"
-		echo -e -n "\nOwner(group):\t$(ls -ld $path | awk '{print $4}')"
-		echo -e -n "\nSize:\t\t$(ls -ld $path | awk '{print $5}') Bytes"
-		echo -e "\nModified:\t$(ls -ld $path | awk '{print $6" "$7" "$8}')"
+		echo -e "Path:\t\t$path"
+		echo -e "Priviligies:\t$(ls -ld $path | awk '{print $1}')"
+		echo -e "Links:\t\t$(ls -ld $path | awk '{print $2}')"
+		echo -e "Owner(user):\t$(ls -ld $path | awk '{print $3}')"
+		echo -e "Owner(group):\t$(ls -ld $path | awk '{print $4}')"
+		echo -e "Size:\t\t$(ls -ld $path | awk '{print $5}') Bytes"
+		echo -e "Modified:\t$(ls -ld $path | awk '{print $6" "$7" "$8}')"
 		echo -e -n "Sticky-bit: "
-		if [ $(echo $(ls -ld $path | awk '{print $1}') | grep [t]$) ]; then
+		if [ $(echo $(ls -ld $path | awk '{print $1}') | grep [t]$) ]; then # Kollar om sista biten i priviligies för filen (foldern) är ett 't'
 			echo -n -e "\tis set"
 		else
 			echo -n -e "\tis not set"
 		fi
 		echo -e -n "\nGuid-bit: "
-		if [ $(echo $(ls -ld $path | awk '{print $1}') | grep ......[s]*) ]; then
+		# Kollar om det sjunde tecknet i priviligies fältet för foldern är ett 's'
+		if [ $(echo $(ls -ld $path | awk '{print $1}') | egrep ^[d]{1}[r,w,x,-]{5}[s]{1}[r,w,x,-]{3}$
+			) ]; then 
 			echo -n -e "\tis set"
 		else
 			echo -n -e "\tis not set"
@@ -805,6 +818,52 @@ listattributes() {
 	fi
 	echo ""
 	read -p "Press enter to continue ..."
+}
+####################### KAN TA BORT HELA SKITEN????? #####################################
+####################### KAN TA BORT HELA SKITEN????? #####################################
+####################### KAN TA BORT HELA SKITEN????? #####################################
+####################### KAN TA BORT HELA SKITEN????? #####################################
+####################### KAN TA BORT HELA SKITEN????? #####################################
+####################### KAN TA BORT HELA SKITEN????? #####################################
+
+
+
+
+
+
+
+
+
+folderattributes() {
+	echo -n "Path to directory: "
+	read path
+	echo $path | wc -w
+	clear
+	echo -e "Attributes\tValues"
+	echo -e "----------\t------"
+	echo -e "Path:\t\t$path"
+	echo -e "Priviligies:\t$(ls -ld $path | awk '{print $1}')"
+	echo -e "Links:\t\t$(ls -ld $path | awk '{print $2}')"
+	echo -e "Owner(user):\t$(ls -ld $path | awk '{print $3}')"
+	echo -e "Owner(group):\t$(ls -ld $path | awk '{print $4}')"
+	echo -e "Size:\t\t$(ls -ld $path | awk '{print $5}') Bytes"
+	echo -e "Modified:\t$(ls -ld $path | awk '{print $6" "$7" "$8}')"
+	echo -e -n "Sticky-bit: "
+	if [ $(echo $(ls -ld $path | awk '{print $1}') | grep [t]$) ]; then # Kollar om sista biten i priviligies för filen (foldern) är ett 't'
+		echo -n -e "\tis set"
+	else
+		echo -n -e "\tis not set"
+	fi
+	echo -e -n "\nGuid-bit: "
+	# Kollar om det sjunde tecknet i priviligies fältet för foldern är ett 's'
+	if [ $(echo $(ls -ld $path | awk '{print $1}') | egrep ^[d]{1}[a-z,-]{5}[s]{1}[a-z,-]{3}$
+		) ]; then 
+		echo -n -e "\tis set"
+	else
+		echo -n -e "\tis not set"
+	fi
+	echo ""
+	read -p "press enter to continue"
 }
 
 foldermenu() {
@@ -824,7 +883,7 @@ foldermenu() {
 					listcontents	
 					;;
 				attributes)
-					listattributes
+					folderattributes
 					;;
 				exit)
 					return 0
@@ -978,8 +1037,8 @@ menu() {
 				helpmenu
 			fi
 		done
-}
-main() {
-	menu
-}
-main
+	}
+	main() {
+		menu
+	}
+	main
