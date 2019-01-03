@@ -856,7 +856,7 @@ chfoldermod() {
 	echo "Changing time for $1"
 	echo -n "Enter last modified time (format:yyyy-mm-dd hh:mm:ss): "
 	read newtime
-	sudo touch -d $newtime $1
+	sudo touch -d "$newtime" $1
 }
 
 chfolderowner() {
