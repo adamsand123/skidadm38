@@ -395,7 +395,7 @@ banner() {
 	echo -e $B"│"$R"▒█▄▄▄█▒█▒▒█▒▄█▄▒█▄▄▀▒"$G"█▒▒█▒█▄▄▀▒█▒▒▒█▒▄█▄▒█▒▒▀█▒"$Y"▒█▄▄█▒▀▄▄▀"$B"│"
 	echo -e $B"└─────────────────────────────────────────────────────────┘"
 	echo -en "$W"
-	echo "          --=[ SKIDADMIN38 (version 0.1.dev.nodisco)]"
+	echo -e "          "$B"--=[ SKIDADMIN38 (version 0.1.dev.nodisco)]"$W""
 }
 
 # ---------- allmäna funktioner --------------
@@ -404,29 +404,6 @@ getinput() {
 	echo -ne "$B[$R"Input Command"$B]:"$W" "
 	read var
 }
-
-printchar() {
-	# Skriver ut en viss mängd valfria tecken
-	# arg 1 tecken
-	# arg 2 antal
-	for i in $(seq 0 $2); do
-		echo -n "$1"
-	done
-}
-
-printversion() {
-	echo -e "\n\t\t=[ SKIDADMIN38 (version 0.1.dev.nodisco)]\t\t\t"
-}
-
-printbanner() {
-	# Skriver ut en banner
-	# Tar inte emot några argument
-	printchar '*' 75
-	printversion
-	printchar '*' 75
-	echo ""
-}
-
 
 ######## ----------- AUTOCOMPLETE FUNKTIONER ------------ ############
 
@@ -507,7 +484,7 @@ removeuserfromgroup() {
 groupmenu() {
 	while true; do
 		clear
-		echo -e "\n+ -- --=[ Group Menu - Type help for more information]\n"
+		echo -e "\n"$B"+ -- --=[ Group Menu - Type help for more information]\n"$W""
 		echo -e ""$G"[+]"$W" create\n"$G"[+]"$W" list\n"$G"[+]"$W" members\n"$G"[+]"$W" add\n"$G"[+]"$W" remove\n"$G"[+]"$W" exit\n"
 		getinput
 		# Kalla på funktion här som ändrar värdet av $val till matchande kommando mha grep (t.ex mem -> members)
@@ -616,7 +593,7 @@ attributes() {
 			#while [ $var != "exit" ]; do
 			showattributes $username
 
-			echo -e "-=[ Attribute Modification Menu]\n"
+			echo -e ""$B"-=[ Attribute Modification Menu]\n"$W""
 			echo -e ""$G"[+]"$W" name\n"$G"[+]"$W" password\n"$G"[+]"$W" uid\n"$G"[+]"$W" gid\n"$G"[+]"$W" comment\n"$G"[+]"$W" home\n"$G"[+]"$W" shell\n"$G"[+]"$W" exit\n"
 
 			getinput
@@ -700,7 +677,7 @@ usermenu() {
 	#while [ $var != "exit" ]; do
 	while true; do
 		clear
-		echo -e "\n+ -- --=[ User Menu - Type help for more information]\n"
+		echo -e "\n"$B"+ -- --=[ User Menu - Type help for more information]\n"$W""
 		echo -e ""$G"[+]"$W" create\n"$G"[+]"$W" password\n"$G"[+]"$W" list\n"$G"[+]"$W" attributes\n"$G"[+]"$W" exit\n"
 		getinput
 		numbermatches=0
@@ -801,7 +778,7 @@ chfolder() {
 	if [ $? -eq 0 ]; then
 		while true; do
 			folderattributes
-			echo -e "\n-=[ Folder Attribute Modification Menu]\n"
+			echo -e "\n"$B"-=[ Folder Attribute Modification Menu]\n"$W""
 			echo -e ""$G"[+]"$W" permissions\n"$G"[+]"$W" owner\n"$G"[+]"$W" group\n"$G"[+]"$W" sticky-bit\n"$G"[+]"$W" setguid\n"$G"[+]"$W" modified\n"$G"[+]"$W" exit\n"
 			getinput
 			numbermatches=$(autocomplete $var "permissions" "owner" "group" "sticky-bit" "setguid" "modified" "exit" | wc -l)
@@ -878,8 +855,8 @@ chfoldergroup() {
 
 chpermfolder() {
 	clear
-	echo -e "\n-=[ Folder Attribute Modification Menu]"
-	echo -e "-=[ Permissions: $(ls -ld $path | awk '{print $1}')]\n"
+	echo -e "\n"$B"-=[ Folder Attribute Modification Menu]"$W""
+	echo -e ""$B"-=[ Permissions: $(ls -ld $path | awk '{print $1}')]\n"$w""
 	echo -e ""$G"[+]"$W" owner\n"$G"[+]"$W" group\n"$G"[+]"$W" other\n"$G"[+]"$W" exit\n"
 	getinput
 	numbermatches=$(autocomplete $var "owner" "group" "other" "exit" | wc -l)
@@ -913,7 +890,7 @@ chpermfolder() {
 }
 
 folderowner() {
-	echo -e "\n-=[ Folder Owner Permission Modification Menu]\n"
+	echo -e "\n"$B"-=[ Folder Owner Permission Modification Menu]\n"$W""
 	echo -e ""$G"[+]"$W" read\n"$G"[+]"$W" write\n"$G"[+]"$W" execute\n"$G"[+]"$W" all\n"$G"[+]"$W" exit\n"
 	getinput
 	numbermatches=$(autocomplete $var "read" "write" "execute" "all" "exit" | wc -l)
@@ -921,8 +898,8 @@ folderowner() {
 		var=$(autocomplete $var  "read" "write" "execute" "all" "exit")
 		case $var in
 			read)
-				echo -e "[1] enable"
-				echo -e "[2] disable"
+				echo -e ""$G"[1]"$W" enable"
+				echo -e ""$G"[2]"$W" disable"
 				getinput
 				if [ $var -eq 1 ]; then
 					sudo chmod u+r $1
@@ -933,8 +910,8 @@ folderowner() {
 				fi
 				;;
 			write)
-				echo -e "[1] enable"
-				echo -e "[2] disable"
+				echo -e ""$G"[1]"$W" enable"
+				echo -e ""$G"[2]"$W" disable"
 				getinput
 				if [ $var -eq 1 ]; then
 					sudo chmod u+w $1
@@ -945,8 +922,8 @@ folderowner() {
 				fi
 				;;
 			execute)
-				echo -e "[1] enable"
-				echo -e "[2] disable"
+				echo -e ""$G"[1]"$W" enable"
+				echo -e ""$G"[2]"$W" disable"
 				getinput
 				if [ $var -eq 1 ]; then
 					sudo chmod u+x $1
@@ -957,8 +934,8 @@ folderowner() {
 				fi
 				;;
 			all)
-				echo -e "[1] enable"
-				echo -e "[2] disable"
+				echo -e ""$G"[1]"$W" enable"
+				echo -e ""$G"[2]"$W" disable"
 				getinput
 				if [ $var -eq 1 ]; then
 					sudo chmod u+rwx $1
@@ -996,8 +973,8 @@ foldergroup() {
 		var=$(autocomplete $var  "read" "write" "execute" "all" "exit")
 		case $var in
 			read)
-				echo -e "[1] enable"
-				echo -e "[2] disable"
+				echo -e ""$G"[1]"$W" enable"
+				echo -e ""$G"[2]"$W" disable"
 				getinput
 				if [ $var -eq 1 ]; then
 					sudo chmod g+r $1
@@ -1008,8 +985,8 @@ foldergroup() {
 				fi
 				;;
 			write)
-				echo -e "[1] enable"
-				echo -e "[2] disable"
+				echo -e ""$G"[1]"$W" enable"
+				echo -e ""$G"[2]"$W" disable"
 				getinput
 				if [ $var -eq 1 ]; then
 					sudo chmod g+w $1
@@ -1020,8 +997,8 @@ foldergroup() {
 				fi
 				;;
 			execute)
-				echo -e "[1] enable"
-				echo -e "[2] disable"
+				echo -e ""$G"[1]"$W" enable"
+				echo -e ""$G"[2]"$W" disable"
 				getinput
 				if [ $var -eq 1 ]; then
 					sudo chmod g+x $1
@@ -1032,8 +1009,8 @@ foldergroup() {
 				fi
 				;;
 			all)
-				echo -e "[1] enable"
-				echo -e "[2] disable"
+				echo -e ""$G"[1]"$W" enable"
+				echo -e ""$G"[2]"$W" disable"
 				getinput
 				if [ $var -eq 1 ]; then
 					sudo chmod g+rwx $1
@@ -1050,13 +1027,11 @@ foldergroup() {
 				;;
 		esac
 	elif [ $numbermatches -gt 1 ]; then
-		echo -ne "$R"
-		echo -e "ERROR: to many matching options"$W"\n"
+		echo -e ""$R"ERROR: to many matching options"$W"\n"
 		autocomplete $var  "read" "write" "execute" "exit"
 
 	else
-		echo -ne "$R"
-		echo -e "ERROR: No matching options"$W""
+		echo -e ""$R"ERROR: No matching options"$W""
 	fi
 	echo "New permissions: $(ls -ld $1 | awk '{print $1}')"
 	read -p "Press enter to continue ..."
@@ -1064,7 +1039,7 @@ foldergroup() {
 
 folderother() {
 	#clear
-	echo -e "\n-=[ Folder Other Permission Modification Menu]\n"
+	echo -e "\n"$B"-=[ Folder Other Permission Modification Menu]\n"$W""
 	echo -e ""$G"[+]"$W" read\n"$G"[+]"$W" write\n"$G"[+]"$W" execute\n"$G"[+]"$W" all\n"$G"[+]"$W" exit\n"
 
 	getinput
@@ -1073,8 +1048,8 @@ folderother() {
 		var=$(autocomplete $var  "read" "write" "execute" "all" "exit")
 		case $var in
 			read)
-				echo -e "[1] enable"
-				echo -e "[2] disable"
+				echo -e ""$G"[1]"$W" enable"
+				echo -e ""$G"[2]"$W" disable"
 				getinput
 				if [ $var -eq 1 ]; then
 					sudo chmod o+r $1
@@ -1085,8 +1060,8 @@ folderother() {
 				fi
 				;;
 			write)
-				echo -e "[1] enable"
-				echo -e "[2] disable"
+				echo -e ""$G"[1]"$W" enable"
+				echo -e ""$G"[2]"$W" disable"
 				getinput
 				if [ $var -eq 1 ]; then
 					sudo chmod o+w $1
@@ -1097,8 +1072,8 @@ folderother() {
 				fi
 				;;
 			execute)
-				echo -e "[1] enable"
-				echo -e "[2] disable"
+				echo -e ""$G"[1]"$W" enable"
+				echo -e ""$G"[2]"$W" disable"
 				getinput
 				if [ $var -eq 1 ]; then
 					sudo chmod o+x $1
@@ -1109,8 +1084,8 @@ folderother() {
 				fi
 				;;
 			all)
-				echo -e "[1] enable"
-				echo -e "[2] disable"
+				echo -e ""$G"[1]"$W" enable"
+				echo -e ""$G"[2]"$W" disable"
 				getinput
 				if [ $var -eq 1 ]; then
 					sudo chmod o+rwx $1
@@ -1140,7 +1115,7 @@ folderother() {
 foldermenu() {
 	while [ $var != "exit" ]; do
 		clear
-		echo -e "\n+ -- --=[ Folder Menu - Type help for more information]\n"
+		echo -e "\n"$B"+ -- --=[ Folder Menu - Type help for more information]\n"$W""
 		echo -e ""$G"[+]"$W" create\n"$G"[+]"$W" list\n"$G"[+]"$W" attributes\n"$G"[+]"$W" exit\n"
 		getinput
 		numbermatches=$(autocomplete $var "create" "list" "attributes" "exit" | wc -l)
@@ -1164,10 +1139,10 @@ foldermenu() {
 					;;
 			esac
 		elif [ $numbermatches -gt 2 ]; then
-			echo "ERROR: to many matching options"
+			echo ""$R"ERROR: to many matching options"$W""
 			autocomplete $var "install" "uninstall" "on" "off" "exit"
 		else
-			echo "ERROR: No matching options"
+			echo ""$R"ERROR: No matching options"$W""
 			helpfolder
 		fi
 	done
@@ -1201,7 +1176,7 @@ turnsshoff() {
 servermenu() {
 	while [ $var != "exit" ]; do
 		clear
-		echo -e "\n+ -- --=[ Server Menu - Type help for more information]\n"
+		echo -e "\n"$B"+ -- --=[ Server Menu - Type help for more information]\n"$W""
 		which openssh-server &> /dev/null
 		if [ $? -eq 0 ]; then
 			echo -e "Status: $(sudo systemctl status ssh)"
@@ -1231,10 +1206,10 @@ servermenu() {
 					;;
 			esac
 		elif [ $numbermatches -gt 1 ]; then
-			echo "ERROR: to many matching options"
+			echo ""$R"ERROR: to many matching options"$W""
 			autocomplete $var "install" "uninstall" "on" "off" "exit"
 		else
-			echo "ERROR: No matching options"
+			echo ""$R"ERROR: No matching options"$W""
 			helpserver
 		fi
 	done
@@ -1250,36 +1225,38 @@ makepretty() {
 # Funktion skriver ut hjälp meny för huvudmenyn
 helpmenu() {
 	clear
-	echo -e "\n+ -- --=[ Main Menu Help Page]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ngroup\t\t\tEnter submenu for group management\nuser\t\t\tEnter submenu for user management\nfolder\t\t\tEnter submenu for folder management\nserver\t\t\tEnter submenu for server settings\nPretty\t\tInstall and verify optional dependencies for extra functionallity\nquit\t\t\texits to program\n"
+	echo -e "\n"$B"+ -- --=[ Main Menu Help Page]"$W"\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ngroup\t\t\tEnter submenu for group management\nuser\t\t\tEnter submenu for user management\nfolder\t\t\tEnter submenu for folder management\nserver\t\t\tEnter submenu for server settings\nPretty\t\tInstall and verify optional dependencies for extra functionallity\nquit\t\t\texits to program\n"
 	read -p "Press any key to continue "
-	menu
+	return 0
 }
 
 # Funktion skriver ut hjälp meny för grupphantering
 helpgroup() {
 	clear
-	echo -e "\n+ -- --=[ Group Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ncreate\t\t\tEnters a interactive menu to create a new group\nlist\t\t\tList all groups\nmembers {group}\t\tList all member in a group\nadd {user} {group}\tadds a user to a group\nremove\t\t\tRemoves a member from a group\nexit\t\t\tExits to main menu\n"
+	echo -e "\n"$B"+ -- --=[ Group Management Help Menu]"$W"\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ncreate\t\t\tEnters a interactive menu to create a new group\nlist\t\t\tList all groups\nmembers {group}\t\tList all member in a group\nadd {user} {group}\tadds a user to a group\nremove\t\t\tRemoves a member from a group\nexit\t\t\tExits to main menu\n"
 	read -p "Press any key to continue "
+	return 0
 }
 
 helpuser() {
 	clear
-	echo -e "\n+ -- --=[ User Management Help Menu]\n\nCommand\t\t\t\tHelp Text\n-------\t\t\t\t---------\ncreate {name}\t\t\tCreate a new user\nchpass {user} {password}\tchange a users password\nlist\t\t\t\tlist all users\nattributes\t\t\tEnter sub-menu to view and modify user attributes\nexit\t\t\t\texit to main menu\n"
+	echo -e "\n"$B"+ -- --=[ User Management Help Menu]"$W"\n\nCommand\t\t\t\tHelp Text\n-------\t\t\t\t---------\ncreate {name}\t\t\tCreate a new user\nchpass {user} {password}\tchange a users password\nlist\t\t\t\tlist all users\nattributes\t\t\tEnter sub-menu to view and modify user attributes\nexit\t\t\t\texit to main menu\n"
 	read -p "Press any key to continue "
+	return 0
 }
 
 helpfolder() {
 	clear
-	echo -e "\n+ -- --=[ Folder Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ncreate\t\t\tcreate a new folder\nlist {folder}\t\tlist the contents of a folder\nattributes {folder}\t\Enters sub-menu for folder attribute configuration\nexit\t\t\texit to main menu\n"
+	echo -e "\n"$B"+ -- --=[ Folder Management Help Menu]"$W"\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ncreate\t\t\tcreate a new folder\nlist {folder}\t\tlist the contents of a folder\nattributes {folder}\t\Enters sub-menu for folder attribute configuration\nexit\t\t\texit to main menu\n"
 	read -p "Press any key to continue "
-	foldermenu
+	return 0
 }
 
 helpserver() {
 	clear
-	echo -e "\n+ -- --=[ Server Management Help Menu]\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ninstall\t\t\tInstalls the OPEN-SSH package\nuninstall\t\tUninstalls the OPEN-SSH package\non\t\t\tturns the SSH service on\noff\t\t\tturns the SSH service off\nexit\t\t\texit to main menu\n"
+	echo -e "\n"$B"+ -- --=[ Server Management Help Menu]"$W"\n\nCommand\t\t\tHelp Text\n-------\t\t\t---------\ninstall\t\t\tInstalls the OPEN-SSH package\nuninstall\t\tUninstalls the OPEN-SSH package\non\t\t\tturns the SSH service on\noff\t\t\tturns the SSH service off\nexit\t\t\texit to main menu\n"
 	read -p "Press any key to continue"
-	servermenu
+	return 0
 }
 
 # Skriver ut huvudmeny
@@ -1287,7 +1264,7 @@ menu() {
 	while true; do
 		clear
 		banner
-		echo -e "+ -- --=[ Main Menu - Type help for more information]\n"
+		echo -e ""$B"+ -- --=[ Main Menu - Type help for more information]"$W"\n"
 		echo -e ""$G"[+]"$W" group\n"$G"[+]"$W" user\n"$G"[+]"$W" folder\n"$G"[+]"$W" server\n"$G"[+]"$W" pretty\n"$G"[+]"$W" quit\n"
 		getinput
 		numbermatches=$(autocomplete $var group user folder server pretty quit | wc -l)
@@ -1318,10 +1295,10 @@ menu() {
 					#helpmenu
 				esac
 			elif [ $numbermatches -gt 1 ]; then
-				echo "ERROR: To many matching options"
+				echo ""$R"ERROR: To many matching options"$W""
 				autocomplete $var
 			else
-				echo "ERROR: No matching options"
+				echo ""$R"ERROR: No matching options"$W""
 				helpmenu
 			fi
 		done
