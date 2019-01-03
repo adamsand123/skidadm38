@@ -508,7 +508,7 @@ groupmenu() {
 	while true; do
 		clear
 		echo -e "\n+ -- --=[ Group Menu - Type help for more information]\n"
-		echo -e "[+] create\n[+] list\n[+] members\n[+] add\n[+] remove\n[+] exit\n"
+		echo -e ""$G"[+]"$W" create\n"$G"[+]"$W" list\n"$G"[+]"$W" members\n"$G"[+]"$W" add\n"$G"[+]"$W" remove\n"$G"[+]"$W" exit\n"
 		getinput
 		# Kalla på funktion här som ändrar värdet av $val till matchande kommando mha grep (t.ex mem -> members)
 		# Om det finns fler än 1 alternativ skriv ut de alternativ som matchar
@@ -617,7 +617,7 @@ attributes() {
 			showattributes $username
 
 			echo -e "-=[ Attribute Modification Menu]\n"
-			echo -e "[+] name\n[+] password\n[+] uid\n[+] gid\n[+] comment\n[+] home\n[+] shell\n[+] exit\n"
+			echo -e ""$G"[+]"$W" name\n"$G"[+]"$W" password\n"$G"[+]"$W" uid\n"$G"[+]"$W" gid\n"$G"[+]"$W" comment\n"$G"[+]"$W" home\n"$G"[+]"$W" shell\n"$G"[+]"$W" exit\n"
 
 			getinput
 			numbermatches=$(autocomplete $var "name" "password" "uid" "gid" "comment" "home" "shell" "exit" | wc -l)
@@ -701,7 +701,7 @@ usermenu() {
 	while true; do
 		clear
 		echo -e "\n+ -- --=[ User Menu - Type help for more information]\n"
-		echo -e "[+] create\n[+] password\n[+] list\n[+] attributes\n[+] exit\n"
+		echo -e ""$G"[+]"$W" create\n"$G"[+]"$W" password\n"$G"[+]"$W" list\n"$G"[+]"$W" attributes\n"$G"[+]"$W" exit\n"
 		getinput
 		numbermatches=0
 		numbermatches=$(autocomplete $var "create" "password" "list" "attributes" "exit" | wc -l)
@@ -804,7 +804,7 @@ chfolder() {
 		while true; do
 			folderattributes
 			echo -e "\n-=[ Folder Attribute Modification Menu]\n"
-			echo -e "[+] permissions\n[+] owner\n[+] group\n[+] sticky-bit\n[+] setguid\n[+] modified\n[+] exit\n"
+			echo -e ""$G"[+]"$W" permissions\n"$G"[+]"$W" owner\n"$G"[+]"$W" group\n"$G"[+]"$W" sticky-bit\n"$G"[+]"$W" setguid\n"$G"[+]"$W" modified\n"$G"[+]"$W" exit\n"
 
 			getinput
 			numbermatches=$(autocomplete $var "permissions" "owner" "group" "sticky-bit" "setguid" "modified" "exit" | wc -l)
@@ -863,7 +863,7 @@ chpermfolder() {
 	clear
 	echo -e "\n-=[ Folder Attribute Modification Menu]"
 	echo -e "-=[ Permissions: $(ls -ld $path | awk '{print $1}')]\n"
-	echo -e "[+] owner\n[+] group\n[+] other\n[+] exit\n"
+	echo -e ""$G"[+]"$W" owner\n"$G"[+]"$W" group\n"$G"[+]"$W" other\n"$G"[+]"$W" exit\n"
 
 	getinput
 	numbermatches=$(autocomplete $var "owner" "group" "other" "exit" | wc -l)
@@ -898,7 +898,7 @@ chpermfolder() {
 
 folderowner() {
 	echo -e "\n-=[ Folder Owner Permission Modification Menu]\n"
-	echo -e "[+] read\n[+] write\n[+] execute\n[+] all\n[+] exit\n"
+	echo -e ""$G"[+]"$W" read\n"$G"[+]"$W" write\n"$G"[+]"$W" execute\n"$G"[+]"$W" all\n"$G"[+]"$W" exit\n"
 
 	getinput
 	numbermatches=$(autocomplete $var "read" "write" "execute" "all" "exit" | wc -l)
@@ -974,7 +974,7 @@ folderowner() {
 
 foldergroup() {
 	echo -e "\n-=[ Folder Group Permission Modification Menu]\n"
-	echo -e "[+] read\n[+] write\n[+] execute\n[+] all\n[+] exit\n"
+	echo -e ""$G"[+]"$W" read\n"$G"[+]"$W" write\n"$G"[+]"$W" execute\n"$G"[+]"$W" all\n"$G"[+]"$W" exit\n"
 	getinput
 	numbermatches=$(autocomplete $var "read" "write" "execute" "all" "exit" | wc -l)
 	if [ $numbermatches -eq 1 ]; then
@@ -1050,7 +1050,7 @@ foldergroup() {
 folderother() {
 	#clear
 	echo -e "\n-=[ Folder Other Permission Modification Menu]\n"
-	echo -e "[+] read\n[+] write\n[+] execute\n[+] all\n[+] exit\n"
+	echo -e ""$G"[+]"$W" read\n"$G"[+]"$W" write\n"$G"[+]"$W" execute\n"$G"[+]"$W" all\n"$G"[+]"$W" exit\n"
 
 	getinput
 	numbermatches=$(autocomplete $var "read" "write" "execute" "all" "exit" | wc -l)
@@ -1126,7 +1126,7 @@ foldermenu() {
 	while [ $var != "exit" ]; do
 		clear
 		echo -e "\n+ -- --=[ Folder Menu - Type help for more information]\n"
-		echo -e "[+] create\n[+] list\n[+] attributes\n[+] exit\n"
+		echo -e ""$G"[+]"$W" create\n"$G"[+]"$W" list\n"$G"[+]"$W" attributes\n"$G"[+]"$W" exit\n"
 		getinput
 		numbermatches=$(autocomplete $var "create" "list" "attributes" "exit" | wc -l)
 		if [ $numbermatches -eq 1 ]; then
@@ -1191,7 +1191,7 @@ servermenu() {
 		if [ $? -eq 0 ]; then
 			echo -e "Status: $(sudo systemctl status ssh)"
 		fi
-		echo -e "[+] install\n[+] uninstall\n[+] on\n[+] off\n[+] exit\n"
+		echo -e ""$G"[+]"$W" install\n"$G"[+]"$W" uninstall\n"$G"[+]"$W" on\n"$G"[+]"$W" off\n"$G"[+]"$W" exit\n"
 		getinput
 		numbermatches=$(autocomplete $var "install" "uninstall" "on" "off" "exit" | wc -l)
 		if [ $numbermatches -eq 1 ]; then
@@ -1273,7 +1273,7 @@ menu() {
 		clear
 		banner
 		echo -e "+ -- --=[ Main Menu - Type help for more information]\n"
-		echo -e "[+] group\n[+] user\n[+] folder\n[+] server\n[+] pretty\n[+] quit\n"
+		echo -e ""$G"[+]"$W" group\n"$G"[+]"$W" user\n"$G"[+]"$W" folder\n"$G"[+]"$W" server\n"$G"[+]"$W" pretty\n"$G"[+]"$W" quit\n"
 		getinput
 		numbermatches=$(autocomplete $var group user folder server pretty quit | wc -l)
 		if [ $numbermatches -eq 1 ]; then
