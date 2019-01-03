@@ -401,7 +401,7 @@ banner() {
 # ---------- allmäna funktioner --------------
 
 getinput() {
-	echo -ne "$B[$R"Input Command"$B]:$W "
+	echo -ne "$B[$R"Input Command"$B]:"$W" "
 	read var
 }
 
@@ -562,11 +562,11 @@ createuser() {
 		sudo useradd -m $username
 		if [ $? -eq 0 ]; then
 			echo -ne "$G"
-			echo -e "User: $username was created successfully$W"
+			echo -e "User: $username was created successfully"$W""
 		fi
 	else
 		echo -ne "$R"
-		echo -e "ERROR creating user$W"
+		echo -e "ERROR creating user"$W""
 	fi
 	read -p "Press any key to continue"
 }
@@ -616,7 +616,7 @@ attributes() {
 			#while [ $var != "exit" ]; do
 			showattributes $username
 
-			echo -e "\n-=[ Attribute Modification Menu]\n"
+			echo -e "-=[ Attribute Modification Menu]\n"
 			echo -e "[+] name\n[+] password\n[+] uid\n[+] gid\n[+] comment\n[+] home\n[+] shell\n[+] exit\n"
 
 			getinput
@@ -680,12 +680,12 @@ attributes() {
 				esac
 			elif [ $numbermatches -gt 1 ]; then
 				echo -ne "$R"
-				echo "ERROR: to many matching options$W\n"
+				echo -e "ERROR: to many matching options$W\n"
 				autocomplete $var "name" "password" "UID" "GID" "comment" "home" "shell" "exit"
 
 			else
 				echo -ne "$R"
-				echo "ERROR: No matching options$W"
+				echo -e "ERROR: No matching options$W"
 			fi
 		done
 	else
@@ -760,42 +760,15 @@ listcontents() {
 	read -p "Press enter to continue ..."
 }
 
-
-
-
-
-
-
-
-####################### KAN TA BORT HELA SKITEN????? #####################################
-####################### KAN TA BORT HELA SKITEN????? #####################################
-####################### KAN TA BORT HELA SKITEN????? #####################################
-####################### KAN TA BORT HELA SKITEN????? #####################################
-####################### KAN TA BORT HELA SKITEN????? #####################################
-####################### KAN TA BORT HELA SKITEN????? #####################################
-listattributes() {
-	echo -n "name of directory: "
-	read directory
-	path=$(find / -type d -name $directory 2>/dev/null)
-	if [ $(echo $path | tr [:blank:] '\n' | wc -l) -gt 1 ]; then
-		echo "There where several paths:"
-		echo $path | tr [:blank:] '\n' | nl
-		echo -n "Which path do you want: "
-		read svar
-
-		#stat $(find /home -type d -name jocke | nl | egrep "^\s+[$svar]+" | awk '{print $2}')
-		path=$(find /home -type d -name jocke | nl | egrep "^\s+[$svar]+" | awk '{print $2}')
-		echo $path
-		ls -ld $(find /home -type d -name jocke | nl | egrep "^\s+[$svar]+" | awk '{print $2}')
-
-	elif[ $(echo $path | tr [:blank:] '\n' | wc -w) -eq 0 ]; 
-		echo "ERROR: No results found"
-	else
+folderattributes() {
+	ls -d $path &>/dev/null
+	if [ $? -eq 0 ]; then
 		clear
+		echo -e "Showing attributes for $path\n"
 		echo -e "Attributes\tValues"
 		echo -e "----------\t------"
 		echo -e "Path:\t\t$path"
-		echo -e "Priviligies:\t$(ls -ld $path | awk '{print $1}')"
+		echo -e "Permissions:\t$(ls -ld $path | awk '{print $1}')"
 		echo -e "Links:\t\t$(ls -ld $path | awk '{print $2}')"
 		echo -e "Owner(user):\t$(ls -ld $path | awk '{print $3}')"
 		echo -e "Owner(group):\t$(ls -ld $path | awk '{print $4}')"
@@ -809,61 +782,345 @@ listattributes() {
 		fi
 		echo -e -n "\nGuid-bit: "
 		# Kollar om det sjunde tecknet i priviligies fältet för foldern är ett 's'
-		if [ $(echo $(ls -ld $path | awk '{print $1}') | egrep ^[d]{1}[r,w,x,-]{5}[s]{1}[r,w,x,-]{3}$
+		if [ $(echo $(ls -ld $path | awk '{print $1}') | egrep ^[d]{1}[a-z,-]{5}[s]{1}[a-z,-]{3}$
 			) ]; then 
 			echo -n -e "\tis set"
 		else
 			echo -n -e "\tis not set"
 		fi
+		echo ""
+		#chfolder
+	else
+		echo "ERROR: Folder doesn't exist!"
 	fi
-	echo ""
-	read -p "Press enter to continue ..."
+	#read -p "press enter to continue"
 }
-####################### KAN TA BORT HELA SKITEN????? #####################################
-####################### KAN TA BORT HELA SKITEN????? #####################################
-####################### KAN TA BORT HELA SKITEN????? #####################################
-####################### KAN TA BORT HELA SKITEN????? #####################################
-####################### KAN TA BORT HELA SKITEN????? #####################################
-####################### KAN TA BORT HELA SKITEN????? #####################################
 
-
-
-
-
-
-
-
-
-folderattributes() {
+chfolder() {
 	echo -n "Path to directory: "
 	read path
-	echo $path | wc -w
+	ls -d $path &>/dev/null
+	if [ $? -eq 0 ]; then
+		while true; do
+			folderattributes
+			echo -e "\n-=[ Folder Attribute Modification Menu]\n"
+			echo -e "[+] permissions\n[+] owner\n[+] group\n[+] sticky-bit\n[+] setguid\n[+] modified\n[+] exit\n"
+
+			getinput
+			numbermatches=$(autocomplete $var "permissions" "owner" "group" "sticky-bit" "setguid" "modified" "exit" | wc -l)
+			if [ $numbermatches -eq 1 ]; then
+				var=$(autocomplete $var  "permissions" "owner" "group" "sticky-bit" "setguid" "modified" "exit")
+				case $var in
+					permissions)
+						chpermfolder
+						;;
+					owner)
+						;;
+					group)
+						;;
+					sticky-bit)
+						;;
+					setguid)
+						;;
+					modified)
+						;;
+					exit)
+						return 0
+						;;
+					*)
+						;;
+				esac
+			elif [ $numbermatches -gt 1 ]; then
+				echo -ne "$R"
+				echo -e "ERROR: to many matching options"$W"\n"
+				autocomplete $var   "permissions" "owner(user)" "owner(group)" "sticky-bit" "setguid" "modified" "exit"
+
+			else
+				echo -ne "$R"
+				echo -e "ERROR: No matching options"$W""
+			fi
+		done
+	else
+		echo -ne "$R"
+		echo -e "ERROR: The folder $path doesn't exist!"$W"\n"
+		read -p "Press enter to continue ..."
+	fi
+}
+
+chpermfolder() {
 	clear
-	echo -e "Attributes\tValues"
-	echo -e "----------\t------"
-	echo -e "Path:\t\t$path"
-	echo -e "Priviligies:\t$(ls -ld $path | awk '{print $1}')"
-	echo -e "Links:\t\t$(ls -ld $path | awk '{print $2}')"
-	echo -e "Owner(user):\t$(ls -ld $path | awk '{print $3}')"
-	echo -e "Owner(group):\t$(ls -ld $path | awk '{print $4}')"
-	echo -e "Size:\t\t$(ls -ld $path | awk '{print $5}') Bytes"
-	echo -e "Modified:\t$(ls -ld $path | awk '{print $6" "$7" "$8}')"
-	echo -e -n "Sticky-bit: "
-	if [ $(echo $(ls -ld $path | awk '{print $1}') | grep [t]$) ]; then # Kollar om sista biten i priviligies för filen (foldern) är ett 't'
-		echo -n -e "\tis set"
+	echo -e "\n-=[ Folder Attribute Modification Menu]"
+	echo -e "-=[ Permissions: $(ls -ld $path | awk '{print $1}')]\n"
+	echo -e "[+] owner\n[+] group\n[+] other\n[+] exit\n"
+
+	getinput
+	numbermatches=$(autocomplete $var "owner" "group" "other" "exit" | wc -l)
+	if [ $numbermatches -eq 1 ]; then
+		var=$(autocomplete $var "owner" "group" "other" "exit")
+		case $var in
+			owner)
+				folderowner
+				;;
+			group)
+				foldergroup
+				;;
+			other)
+				folderother
+				;;
+			exit)
+				return 0
+				;;
+			*)
+				;;
+		esac
+	elif [ $numbermatches -gt 1 ]; then
+		echo -ne "$R"
+		echo -e "ERROR: to many matching options"$W"\n"
+		autocomplete $var "owner" "group" "other" "exit"
+
 	else
-		echo -n -e "\tis not set"
+		echo -ne "$R"
+		echo -e "ERROR: No matching options"$W""
 	fi
-	echo -e -n "\nGuid-bit: "
-	# Kollar om det sjunde tecknet i priviligies fältet för foldern är ett 's'
-	if [ $(echo $(ls -ld $path | awk '{print $1}') | egrep ^[d]{1}[a-z,-]{5}[s]{1}[a-z,-]{3}$
-		) ]; then 
-		echo -n -e "\tis set"
+}
+
+folderowner() {
+	echo -e "\n-=[ Folder Owner Permission Modification Menu]\n"
+	echo -e "[+] read\n[+] write\n[+] execute\n[+] all\n[+] exit\n"
+
+	getinput
+	numbermatches=$(autocomplete $var "read" "write" "execute" "all" "exit" | wc -l)
+	if [ $numbermatches -eq 1 ]; then
+		var=$(autocomplete $var  "read" "write" "execute" "all" "exit")
+		case $var in
+			read)
+				echo -e "[1] enable"
+				echo -e "[2] disable"
+				read svar
+
+				if [ $svar -eq 1 ]; then
+					sudo chmod u+r $path
+				elif [ $svar -eq 2 ]; then
+					sudo chmod u-r $path
+				else
+					echo "ERROR: Invalid option"
+				fi
+				;;
+			write)
+				echo -e "[1] enable"
+				echo -e "[2] disable"
+				read svar
+
+				if [ $svar -eq 1 ]; then
+					sudo chmod u+w $path
+				elif [ $svar -eq 2 ]; then
+					sudo chmod u-w $path
+				else
+					echo "ERROR: Invalid option"
+				fi
+				;;
+			execute)
+				echo -e "[1] enable"
+				echo -e "[2] disable"
+				read svar
+
+				if [ $svar -eq 1 ]; then
+					sudo chmod u+x $path
+				elif [ $svar -eq 2 ]; then
+					sudo chmod u-x $path
+				else
+					echo "ERROR: Invalid option"
+				fi
+				;;
+			all)
+				echo -e "[1] enable"
+				echo -e "[2] disable"
+				read svar
+
+				if [ $svar -eq 1 ]; then
+					sudo chmod u+rwx $path
+				elif [ $svar -eq 2 ]; then
+					sudo chmod u-rwx $path
+				else
+					echo "ERROR: Invalid option"
+				fi
+				;;
+			exit)
+				return 0
+				;;
+			*)
+				;;
+		esac
+	elif [ $numbermatches -gt 1 ]; then
+		echo -ne "$R"
+		echo -e "ERROR: to many matching options"$W"\n"
+		autocomplete $var  "read" "write" "execute" "exit"
+
 	else
-		echo -n -e "\tis not set"
+		echo -ne "$R"
+		echo -e "ERROR: No matching options"$W""
 	fi
-	echo ""
-	read -p "press enter to continue"
+	echo "New permissions: $(ls -ld $path | awk '{print $1}')"
+	read -p "Press enter to continue ..."
+}
+
+foldergroup() {
+	echo -e "\n-=[ Folder Group Permission Modification Menu]\n"
+	echo -e "[+] read\n[+] write\n[+] execute\n[+] all\n[+] exit\n"
+
+	getinput
+	numbermatches=$(autocomplete $var "read" "write" "execute" "all" "exit" | wc -l)
+	if [ $numbermatches -eq 1 ]; then
+		var=$(autocomplete $var  "read" "write" "execute" "all" "exit")
+		case $var in
+			read)
+				echo -e "[1] enable"
+				echo -e "[2] disable"
+				read svar
+
+				if [ $svar -eq 1 ]; then
+					sudo chmod g+r $path
+				elif [ $svar -eq 2 ]; then
+					sudo chmod g-r $path
+				else
+					echo "ERROR: Invalid option"
+				fi
+				;;
+			write)
+				echo -e "[1] enable"
+				echo -e "[2] disable"
+				read svar
+
+				if [ $svar -eq 1 ]; then
+					sudo chmod g+w $path
+				elif [ $svar -eq 2 ]; then
+					sudo chmod g-w $path
+				else
+					echo "ERROR: Invalid option"
+				fi
+				;;
+			execute)
+				echo -e "[1] enable"
+				echo -e "[2] disable"
+				read svar
+
+				if [ $svar -eq 1 ]; then
+					sudo chmod g+x $path
+				elif [ $svar -eq 2 ]; then
+					sudo chmod g-x $path
+				else
+					echo "ERROR: Invalid option"
+				fi
+				;;
+			all)
+				echo -e "[1] enable"
+				echo -e "[2] disable"
+				read svar
+
+				if [ $svar -eq 1 ]; then
+					sudo chmod g+rwx $path
+				elif [ $svar -eq 2 ]; then
+					sudo chmod g-rwx $path
+				else
+					echo "ERROR: Invalid option"
+				fi
+				;;
+			exit)
+				return 0
+				;;
+			*)
+				;;
+		esac
+	elif [ $numbermatches -gt 1 ]; then
+		echo -ne "$R"
+		echo -e "ERROR: to many matching options"$W"\n"
+		autocomplete $var  "read" "write" "execute" "exit"
+
+	else
+		echo -ne "$R"
+		echo -e "ERROR: No matching options"$W""
+	fi
+	echo "New permissions: $(ls -ld $path | awk '{print $1}')"
+	read -p "Press enter to continue ..."
+}
+
+folderother() {
+	clear
+	echo -e "\n-=[ Folder Other Permission Modification Menu]\n"
+	echo -e "[+] read\n[+] write\n[+] execute\n[+] all\n[+] exit\n"
+
+	getinput
+	numbermatches=$(autocomplete $var "read" "write" "execute" "all" "exit" | wc -l)
+	if [ $numbermatches -eq 1 ]; then
+		var=$(autocomplete $var  "read" "write" "execute" "all" "exit")
+		case $var in
+			read)
+				echo -e "[1] enable"
+				echo -e "[2] disable"
+				read svar
+
+				if [ $svar -eq 1 ]; then
+					sudo chmod o+r $path
+				elif [ $svar -eq 2 ]; then
+					sudo chmod o-r $path
+				else
+					echo "ERROR: Invalid option"
+				fi
+				;;
+			write)
+				echo -e "[1] enable"
+				echo -e "[2] disable"
+				read svar
+
+				if [ $svar -eq 1 ]; then
+					sudo chmod o+w $path
+				elif [ $svar -eq 2 ]; then
+					sudo chmod o-w $path
+				else
+					echo "ERROR: Invalid option"
+				fi
+				;;
+			execute)
+				echo -e "[1] enable"
+				echo -e "[2] disable"
+				read svar
+
+				if [ $svar -eq 1 ]; then
+					sudo chmod o+x $path
+				elif [ $svar -eq 2 ]; then
+					sudo chmod o-x $path
+				else
+					echo "ERROR: Invalid option"
+				fi
+				;;
+			all)
+				echo -e "[1] enable"
+				echo -e "[2] disable"
+				read svar
+
+				if [ $svar -eq 1 ]; then
+					sudo chmod o+rwx $path
+				elif [ $svar -eq 2 ]; then
+					sudo chmod o-rwx $path
+				else
+					echo "ERROR: Invalid option"
+				fi
+				;;
+			exit)
+				return 0
+				;;
+			*)
+				;;
+		esac
+	elif [ $numbermatches -gt 1 ]; then
+		echo -ne "$R"
+		echo -e "ERROR: to many matching options"$W"\n"
+		autocomplete $var  "read" "write" "execute" "exit"
+
+	else
+		echo -ne "$R"
+		echo -e "ERROR: No matching options"$W""
+	fi
 }
 
 foldermenu() {
@@ -883,7 +1140,8 @@ foldermenu() {
 					listcontents	
 					;;
 				attributes)
-					folderattributes
+					#folderattributes
+					chfolder
 					;;
 				exit)
 					return 0
@@ -899,6 +1157,8 @@ foldermenu() {
 			helpfolder
 		fi
 	done
+	echo "New permissions: $(ls -ld $path | awk '{print $1}')"
+	read -p "Press enter to continue ..."
 }
 
 # ------------- SERVER -------------
