@@ -472,16 +472,19 @@ chfolderguid() {
 	echo -e "[2] disable"
 	getinput
 	if [ $var -eq 1 ]; then
-		sudo chmod g+r $1
+		sudo chmod g+s $1
 	elif [ $var -eq 2 ]; then
-		sudo chmod g-r $1
+		sudo chmod g-s $1
 	else
 		echo "ERROR: Invalid option"
 	fi
 }
 
 chfoldermod() {
-echo""
+	echo "Changing time for $1"
+	echo -n "Enter last modified time (format:yyyy-mm-dd hh:mm:ss): "
+	read newtime
+	sudo touch -d "$newtime" $1
 }
 
 chfolderowner() {
@@ -489,14 +492,15 @@ chfolderowner() {
 	read newowner
 	sudo chown $newowner $1
 	ls -ld $path | awk '{print $3}'
-	read -p "enter ffs"
+	read -p "Enter to continue"
+	read time
 }
 chfoldergroup() {
 	echo -n "new group: "
 	read newgroup
 	sudo chown :$newgroup $1
 	ls -ld $path | awk '{print $4}'
-	read -p "enter ffs"
+	read -p "Enter to continue"
 }
 
 chpermfolder() {
