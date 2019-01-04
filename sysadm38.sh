@@ -5,11 +5,11 @@
 ####### FÄRGER
 # ---- TEXT ----
 P='\033[49;95m'
+NP='\033[2;49;35m'
 R='\033[1;31m'
 B='\033[1;34m'
 C='\033[0;36m'
 G='\033[1;32m'
-W='\033[1;37m'
 Y='\033[1;33m'
 W='\033[0;49;39m'
 # ---- bakgrund ---
@@ -89,11 +89,16 @@ listgroupmembers() {
 addusertogroup() {
     echo -n "what group would you like to add a user to: "
     read group
+    cat /etc/group | grep $group &>/dev/null
+    if [ $? -eq 0 ]; then
 
-    echo -n "what user: "
-    read user
+        echo -n "what user: "
+        read user
 
-    sudo usermod -aG $group $user
+        sudo usermod -aG $group $user
+    else
+        echo -e ""$R"ERROR: group does not exist!"$W""
+    fi
 
     read -p "Press enter to continue ..."
 }
@@ -102,10 +107,15 @@ removeuserfromgroup() {
     echo -n "what group would you like to remove a user from: "
     read groupname
 
-    echo -n "what user: "
-    read username
-    sudo deluser $username $groupname
+    cat /etc/group | grep $group &>/dev/null
+    if [ $? -eq 0 ]; then
+        echo -n "what user: "
+        read username
+        sudo deluser $username $groupname
 
+    else
+        echo -e ""$R"ERROR: group does not exist!"$W""
+    fi
     read -p "Press enter to continue ..."
 }
 
@@ -232,23 +242,26 @@ attributes() {
                         echo -n "Please enter new name: "
                         read newname
                         sudo usermod -l $newname $username
-                        username=$newname
+                        if [ $? -eq 0 ]; then
+                            username=$newname
+                        fi
+                        read -p "Press ENTER to continue"
                         ;;
                     password)
                         sudo passwd $username
-                        read -p "Press anything to continue: "
+                        read -p "Press ENTER to continue: "
                         ;;
                     uid)
                         echo -n "Please enter new uid: "
                         read newuid
                         sudo usermod -u $newuid $username
-                        read -p "Press anything to continue: "
+                        read -p "Press ENTER to continue: "
                         ;;
                     gid)
                         echo -n "Please enter new gid: "
                         read newgid
                         sudo usermod -g $newgid $username
-                        read -p "Press anything to continue: "
+                        read -p "Press ENTER to continue: "
                         ;;
                     comment)
                         echo -n "Please enter a comment: "
@@ -264,7 +277,7 @@ attributes() {
                         else
                             echo -e ""$W"["$R"-"$W"] "$R"Error wrong path"$W""
                         fi
-                        read -p "Press anything to continue: "
+                        read -p "Press ENTER to continue: "
                         ;;
                     shell)
                         echo "Which shell would you like to use for $username?"
@@ -273,7 +286,7 @@ attributes() {
                         read var
                         shell=$(cat /etc/shells | grep ^/ | nl | grep $var | awk '{print $2}')
                         sudo usermod -s $shell $username
-                        read -p "Press anything to continue: "
+                        read -p "Press ENTER to continue: "
                         ;;
                     exit)
                         #break
@@ -403,7 +416,7 @@ folderattributes() {
 }
 
 chfolder() {
-    echo -n "Path to directory: "
+    echo -n "Absolute path to directory: "
     read path
     ls -d $path &>/dev/null
     if [ $? -eq 0 ]; then
@@ -835,10 +848,12 @@ turnsshoff() {
 servermenu() {
     while [ $var != "exit" ]; do
         clear
-        echo -e "\n"$B"+ -- --=[ Server Menu - Type help for more information]\n"$W""
+        echo -e "\n"$B"+ -- --=[ Server Menu - Type help for more information]"$W""
         sudo apt list --installed 2>/dev/null | grep openssh-server
         if [ $? -eq 0 ]; then
             echo -e "Status: $(sudo systemctl status ssh)\n"
+        else
+            echo -e ""$B+- --=["Note: "$R"openssh-server is currently not installed"$B"]"$W"\n"
         fi
         echo -e ""$G"[+]"$W" install\n"$G"[+]"$W" uninstall\n"$G"[+]"$W" on\n"$G"[+]"$W" off\n"$G"[+]"$W" exit\n"
         getinput
@@ -850,13 +865,28 @@ servermenu() {
                     installssh
                     ;;
                 uninstall)
-                    uninstallssh
+                    sudo apt list --installed 2>/dev/null | grep openssh-server
+                    if [ $? -eq 0 ]; then
+                        uninstallssh
+                    else
+                        echo -e ""$R"Can't uninstall openssh-server because it is not installed"$W""
+                    fi
                     ;;
                 on)
-                    turnsshon
+                    sudo apt list --installed 2>/dev/null | grep openssh-server
+                    if [ $? -eq 0 ]; then
+                        turnsshon
+                    else
+                        echo -e ""$R"Can't uninstall openssh-server because it is not installed"$W""
+                    fi
                     ;;
                 off)
-                    turnsshoff
+                    sudo apt list --installed 2>/dev/null | grep openssh-server
+                    if [ $? -eq 0 ]; then
+                        turnsshoff
+                    else
+                        echo -e ""$R"Can't uninstall openssh-server because it is not installed"$W""
+                    fi
                     ;;
                 exit)
                     return 0
