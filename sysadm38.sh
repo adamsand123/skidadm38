@@ -402,7 +402,7 @@ folderattributes() {
         echo -e "Owner(user):"$G"\t$(ls -ld $path | awk '{print $3}')"$W""
         echo -e "Owner(group):"$G"\t$(ls -ld $path | awk '{print $4}')"$W""
         echo -e "Size:"$G"\t\t$(ls -ld $path | awk '{print $5}') Bytes"$W""
-        echo -e "Modified:"$G"\t$(ls -ld $path | awk '{print $6" "$7" "$8}')"$W""
+        echo -e "Modified:"$G"\t$(stat . | grep Modify | awk '{print $2 " " $3}' | awk -F. '{print $1}')"$W""
         echo -e -n "Sticky-bit:"$G" "
         if [ $(echo $(ls -ld $path | awk '{print $1}') | grep [t]$) ]; then # Kollar om sista biten i priviligies för filen (foldern) är ett 't'
             echo -n -e "\tis set""$W"
