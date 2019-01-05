@@ -43,7 +43,7 @@ autocomplete() {
     echo ${commands[@]} | tr [:blank:] '\n' | grep ^$(echo $1 | tr [A-Z] [a-z])
 }
 
-# ---------- GRUPP FUNKTIONER ---------
+# ---------- GROUP FUNCTIONS ---------
 
 creategroup() {
     echo "creating group"
@@ -60,9 +60,14 @@ creategroup() {
 }
 
 listgroups() {
-    echo -e "Listing groups\n"
-    cat /etc/group | cut -d: -f1 | column
-    echo ""
+    echo -e ""$B"+- --["$W"Listing all groups: "$R"Red = Root"$W" - "$B"Blue = System Groups"$W" - "$G"Green = User Groups"$B"]\n"$W""
+    echo -en "$R"
+    getent group | awk -F: '$3==0'
+    echo -en "$B"
+    getent group | awk -F: '$3>0 && $3<1000'
+    echo -en "$G"
+    getent group | awk -F: '$3>=1000'
+    echo -e "$W"
     read -p "Press enter to continue ..."
 }
 
@@ -72,7 +77,7 @@ listgroupmembers() {
 
     getent group $gid &>/dev/null
     if [ $? -eq 0 ]; then
-        echo -e "The members of the group: "
+        echo -e "The members of the group: '"$G"$gid"$W"'"$G""
         for user in $(cut -d: -f1 /etc/passwd); do
             id $user | cut -d ' ' -f 2,3 | grep -w "$gid" &>/dev/null
             if [ $? -eq 0 ]; then
@@ -80,9 +85,9 @@ listgroupmembers() {
             fi
         done
     else
-        echo -e "ERROR: The group doesn't exist!\n"
+        echo -e ""$R"ERROR: The group doesn't exist!"$W"\n"
     fi
-    echo ""
+    echo -e ""$W""
     read -p "Press enter to continue ..."
 }
 
@@ -182,7 +187,7 @@ createuser() {
         echo -ne "$R"
         echo -e "ERROR creating user"$W""
     fi
-    read -p "Press any key to continue"
+    read -p "Press enter to continue"
 }
 
 passwduser() {
@@ -196,38 +201,41 @@ passwduser() {
     else
         sudo passwd $username > /dev/null
     fi
-    echo ""
-    read -p "Press any key to continue"
+    read -p "Press enter to continue"
 }
 
 listuser() {
-    cat /etc/passwd | awk -F ":" '{print $1}' | nl
-    echo ""
-    read -p "Press any key to continue"
+    clear
+    echo -e ""$B"+- --["$W"Listing all users: "$R"Red = Root"$W" - "$B"Blue = System Users"$W" - "$G"Green = Normal User Accounts"$B"]\n"$W""
+    echo -en "$R"
+    getent passwd | awk -F: '$3==0'
+    echo -en "$B"
+    getent passwd | awk -F: '$3>0 && $3<1000'
+    echo -en "$G"
+    getent passwd | awk -F: '$3>=1000'
+    echo -e "$W"
+    read -p "Press enter to continue"
 }
 
 showattributes() {
     clear
-    echo "Showing attributes for user: $1"
-    echo -e "\nUsername: \t$(cat /etc/passwd | grep "^$1:" | cut -d: -f1)"
-    echo -e "Password: \t$(cat /etc/passwd | grep "^$1:" | cut -d ":" -f 2)"
-    echo -e "UID: \t\t$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 3)"
-    echo -e "GID: \t\t$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 4)"
-    echo -e "Comments: \t$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 5)"
-    echo -e "Home folder: \t$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 6)"
-    echo -e "Shell: \t\t$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 7)\n"
+    echo -e "Showing attributes for user: "$G"$1""$W"
+    echo -e "\nUsername: \t"$G"$(cat /etc/passwd | grep "^$1:" | cut -d: -f1)""$W"
+    echo -e "Password: \t"$G"$(cat /etc/passwd | grep "^$1:" | cut -d ":" -f 2)""$W"
+    echo -e "UID: \t\t"$G"$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 3)""$W"
+    echo -e "GID: \t\t"$G"$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 4)""$W"
+    echo -e "Comments: \t"$G"$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 5)""$W"
+    echo -e "Home folder: \t"$G"$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 6)""$W"
+    echo -e "Shell: \t\t"$G"$(cat /etc/passwd | grep "^$1:" |cut -d ":" -f 7)\n""$W"
 }
 
 attributes() {
     echo -n "Enter user name: "
     read username
 
-    #cat /etc/passwd | grep ^$username >> /dev/null
     getent passwd $username > /dev/null
     if [ $? -eq 0 ]; then
-        #var="notexit"
         while true; do
-            #while [ $var != "exit" ]; do
             showattributes $username
 
             echo -e ""$B"-=[ Attribute Modification Menu]\n"$W""
@@ -280,7 +288,7 @@ attributes() {
                         read -p "Press ENTER to continue: "
                         ;;
                     shell)
-                        echo "Which shell would you like to use for $username?"
+                        echo "Which shell would you like to use for "$G"$username?""$W"
                         sudo cat /etc/shells | grep ^/ | nl
                         echo -e -n "$B""["$R"Input"$B"]: "$W""
                         read var
@@ -471,8 +479,8 @@ chfolder() {
 }
 
 chfoldersticky() {
-    echo -e "[1] enable"
-    echo -e "[2] disable"
+    echo -e ""$G"[1]"$W" enable"
+    echo -e ""$G"[2]"$W" disable"
     getinput
     if [ $var -eq 1 ]; then
         sudo chmod o+t $1
@@ -484,8 +492,8 @@ chfoldersticky() {
 }
 
 chfolderguid() {
-    echo -e "[1] enable"
-    echo -e "[2] disable"
+    echo -e ""$G"[1]"$W" enable"
+    echo -e ""$G"[2]"$W" disable"
     getinput
     if [ $var -eq 1 ]; then
         sudo chmod g+s $1
@@ -498,7 +506,7 @@ chfolderguid() {
 
 chfoldermod() {
     echo "Changing time for $1"
-    echo -n "Enter last modified time (format:yyyy-mm-dd hh:mm:ss): "
+    echo -en "Enter last modified time ("$B"format:"$G"yyyy-mm-dd hh:mm:ss"$B"):"$W" "
     read newtime
     sudo touch -d "$newtime" $1
 }
